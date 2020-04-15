@@ -39,26 +39,32 @@ then
 	echo "El segundo parametros no es un numero mayor a 0"
 	exit 1;
 fi
+empezarDemonio()
+{
+while true; do
+	for filename in `ls $2`; do
 
-for filename in `ls $2`; do
-
-	if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
-	then
-		echo "Archivo Invalido:" $filename
-		rm "$2/$filename"
-	fi
-	if test -e "$2/$filename"
-	then
-		nombreArchivo=`echo $filename | cut -d'-' -f 1`
-		semanaArchivo=`echo $filename | cut -d'-' -f 2 | cut -d'.' -f 1`
-		for candidato in `ls $2 | grep $nombreArchivo`; do
-			semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
-			if [[ $semanaArchivo > $semanaArchivoCandidato ]] && test -e "$2/$candidato"
-			then
-				echo "Se elimino " $2/$candidato
-				rm "$2/$candidato"
-			fi
-		done
-	fi
+		if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
+		then
+			echo "Archivo Invalido:" $filename
+			rm "$2/$filename"
+		fi
+		if test -e "$2/$filename"
+		then
+			nombreArchivo=`echo $filename | cut -d'-' -f 1`
+			semanaArchivo=`echo $filename | cut -d'-' -f 2 | cut -d'.' -f 1`
+			for candidato in `ls $2 | grep $nombreArchivo`; do
+				semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
+				if [[ $semanaArchivo > $semanaArchivoCandidato ]] && test -e "$2/$candidato"
+				then
+					echo "Se elimino " $2/$candidato
+					rm "$2/$candidato"
+				fi
+			done
+		fi
+	done
+	sleep $4
 done
-sleep $4
+}
+empezarDemonio $1 $2 $3 $4 &
+echo "Se inicio correctamente el demonio su PID es:" $!
