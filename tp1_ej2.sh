@@ -2,9 +2,41 @@
 PIFS=IFS
 IFS="
 "
-if ! test -d "$1" || ! test -e "$1"; then
-	echo "No es un directorio" $1
-	exit 1;
+if [[ $1 == "--help" || $1 == "-h" || $1 == "-?" ]]
+then
+	echo "
+	Autor: Grupo 4
+	Ejercicio 2 Trabajo Practico 1
+
+	Este script debe ejecutarse como tp1_ej2.sh -p directorioLogsLlamada
+
+	El script procesara los archivos de logs de llamada en el directorio y generara reportes sobre cada uno:
+
+	- Promedio de tiempo de las llamadas realizadas por dia.
+	- Promedio de tiempo y cantidad de usuario por dia.
+	- Los 3 Usuarios con mas llamadas en la semana.
+	- Cantidad de llamadas que no superan la media de tiempo por dia.
+	- El usuario con mas llamadas debajo del promedio semanal.
+
+	El directorio de prueba es lotes_tp1
+
+	"
+	exit 0;
+fi
+if [[ $# != 2 ]]
+then
+	echo "Hay un error en los parametros, revise el --help"
+	exit 1;       
+fi
+if [[ $1 != "-p" ]]
+then
+	echo "El primero parametro debe ser -p"
+	exit 2;
+fi
+
+if ! test -d "$2" || ! test -e "$2"; then
+	echo "No es un directorio o no existe" $1
+	exit 3;
 fi
 
 leer_archivo()
@@ -31,14 +63,13 @@ leer_archivo()
 		fi
 	done < "$1"
 }
-for path in $(ls $1) 
+for path in $(ls $2) 
 do
 	nombre_archivo=$(echo $path | cut -d'.' -f 1)
 	nombre_procesado="$nombre_archivo-llamadas.txt"
-	leer_archivo $1/$path $nombre_procesado
+	leer_archivo $2/$path $nombre_procesado
 	awk '
-	BEGIN
-	{
+	BEGIN {
 		print "-------------------------------------------------------------"
 	}
 	{
@@ -59,7 +90,7 @@ do
 				tiempo_total_usuario = tiempo_total_dia[dia][usuario]
 				cant_llamadas_usuario = cant_llamadas_dia[dia][usuario]
 
-				printf("\t El usuario %s tiene un promedio de tiempo de %s y una cantidad de llamadas %s \n",
+				printf("\t El usuario %s tiene un promedio de tiempo de %s minutos e hizo %s llamadas \n",
 			       		usuario,tiempo_total_usuario/cant_llamadas_usuario, cant_llamadas_usuario)
 				
 				tiempo_dia+=tiempo_total_usuario
@@ -67,7 +98,7 @@ do
 				cant_llamadas_semana_usuario[usuario] = cant_llamadas_usuario
 			}
 			promedios_dia[dia]=tiempo_dia/cant_dia
-			printf("El promedio de tiempo del dia es de %s \n\n", promedios_dia[dia])
+			printf("El promedio de tiempo del %s es de %s minutos\n\n", dia, promedios_dia[dia])
 		}
 		for (usuario in tiempo_llamadas_usuario)
 		{
@@ -82,32 +113,34 @@ do
 				}
 			}
 		}
-		print "Cantidad de llamadas que no superan la media por dia"
+		print "Cantidad de llamadas que no superan la media por dia:"
 		for (dia in menores_promedio_dia)
 		{
-			print "Dia: ",dia,"llamadas: ", menores_promedio_dia[dia]
+			print "Dia:",dia,"| Cantidad Llamadas:", menores_promedio_dia[dia]
 		}
 		print "\n"
 
 		PROCINFO["sorted_in"] = "@val_num_desc"
+
 		stop=0
-		print "Top 3 Usuarios con las mayores llamadas por semana"
+		print "Top 3 Usuarios con la mayor cantidad de llamadas:"
 		for (i in cant_llamadas_semana_usuario)
 		{
 			if(stop == 3)
 				break;
-			print "Usuario: ", i,"Cantidad Llamadas: ", cant_llamadas_semana_usuario[i]
+			print "Usuario:", i,"| Cantidad Llamadas:", cant_llamadas_semana_usuario[i]
 			stop++;
 
 		}
 		print "\n"
-		print "El usuario con mas llamadas menores al promedio por semana"
+
+		print "El usuario con mas llamadas menores al promedio por semana:"
 		stop=0
 		for (i in menores_promedio_semana)
 		{
 			if(stop == 1)
 				break;
-			print i, menores_promedio_semana[i]
+			print "Usuario",i, "| Cantidad Llamadas", menores_promedio_semana[i]
 			stop++
 		}
 		print "\n"
