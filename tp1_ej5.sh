@@ -42,13 +42,56 @@ fi
 archivo_entrada=$2
  
 awk '
-  BEGIN { FS = "||"; NR>1; printf("HEADER\n") }
+  BEGIN {
+    FS = "|";
+    NR>1;
+    printf("Materia,Final,Recursan,Recuperan,Abandonaron\n");
+    materias = [][];
+  }
   {
-    
-    materias[$2]=[]
+    materia = $2
+
+    if (!(materia in materias)) {
+      materias[materia] = [0, 0, 0, 0];
+    }
+
+    nota_primer_parcial = $3;
+    nota_segundo_parcial = $4;
+    nota_recuperatorio = $5;
+    nota_final = $6;
+
+    if (nota_final > 0) {
+      if (nota_final < 4) {
+        materias[materia][1]++
+      }
+    } else {
+      if (nota_recu > 0) {
+        if (nota_recu < 4) {
+          materias[materia][1]++
+        } else if (nota_recu >= 4 || nota_recu <= 6) {
+          materias[materia][0]++
+        } else {
+          if (nota_primer_parcial < 7 && nota_segundo_parcial < 7) {
+            materias[materia][0]++
+          }
+        }
+      } else {
+        if (nota_primer_parcial == 0 || nota_segundo_parcial == 0) {
+          materias[materia][3]++
+        } else if (nota_primer_parcial < 4 && nota_segundo_parcial < 4) {
+          materias[materia][1]++
+        } else if (nota_primer_parcial <= 6 && nota_segundo_parcial >= 4) {
+          materias[materia][2]++
+        } else if (nota_segundo_parcial <= 6 && nota_primer_parcial >= 4) {
+          materias[materia][2]++
+        }
+      }
+    }
   }
   END {
-    printf("Materia %s\n", id_materia)
+    for (materia in materias) {
+      printf("%d,%d,%d,%d,%d\n", materia, materias[materia][0], materias[materia][1], materias[materia][2], materias[materia][3]);
+    }
   }
 ' $archivo_entrada > salida.out
 
