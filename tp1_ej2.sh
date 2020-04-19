@@ -37,6 +37,10 @@ do
 	nombre_procesado="$nombre_archivo-llamadas.txt"
 	leer_archivo $1/$path $nombre_procesado
 	awk '
+	BEGIN
+	{
+		print "-------------------------------------------------------------"
+	}
 	{
 		tiempo_total_semana+=$4
 		cant_llamadas_semana++
