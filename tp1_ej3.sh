@@ -16,55 +16,63 @@ then
 fi
 if [[ $# != 4 ]]
 then
-	echo "Estan mal los parametros, por favor revise."
+	echo "Estan mal los parametros, por favor revise el --help."
 	exit 1;
 fi
-if [[ $1 != "-p" ]]
-then
-	echo "El primer parametro debe ser de la forma -p pathDirectorio"
-	exit 1;
-fi
-if ! test -e $2 && ! test -d $2;
+# Codigo para detectar los parametros
+idx=1
+for parametro in "$@"
+do
+	idx=$((idx+1))
+	proximo_parametro=$(echo $@ | cut -d' ' -f $idx)
+	if [[ $parametro == "-p" ]]
+	then
+		directorio=$proximo_parametro
+	fi
+	if [[ $parametro == "-t" ]]
+	then
+		tiempo=$proximo_parametro
+	fi
+done
+
+if ! test -e $directorio && ! test -d $directorio;
 then
 	echo "El path no existe o no es un directorio"
 	exit 1;
 fi
-if [[ $3 != "-t" ]]
-then
-	echo "El segundo parametro debe ser de la forma -t tiempo"
-	exit 1;
-fi
-if [[ $4 =~ [^1-9]+ ]]
+if [[ $tiempo =~ [^1-9]+ ]]
 then
 	echo "El segundo parametros no es un numero mayor a 0"
 	exit 1;
 fi
 empezarDemonio()
 {
-while true; do
-	for filename in `ls $2`; do
+	directorio=$1
+	tiempo=$2
+	while true; do
+	for filename in `ls $directorio`; do
 
 		if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
 		then
-			echo "Archivo Invalido:" $filename
-			rm "$2/$filename"
+			echo "Se elimina $filename por tener un nombre invalido"
+			rm "$directorio/$filename"
 		fi
-		if test -e "$2/$filename"
+		if test -e "$directorio/$filename"
 		then
 			nombreArchivo=`echo $filename | cut -d'-' -f 1`
 			semanaArchivo=`echo $filename | cut -d'-' -f 2 | cut -d'.' -f 1`
-			for candidato in `ls $2 | grep $nombreArchivo`; do
+			for candidato in `ls $directorio | grep $nombreArchivo`; do
 				semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
-				if [[ $semanaArchivo > $semanaArchivoCandidato ]] && test -e "$2/$candidato"
+				if [[ $semanaArchivo > $semanaArchivoCandidato ]] && test -e "$directorio/$candidato"
 				then
-					echo "Se elimino " $2/$candidato
-					rm "$2/$candidato"
+					echo "Se encontro $nombreArchivo se elimina $candidato por ser mas antiguo"
+					rm "$directorio/$candidato"
 				fi
 			done
 		fi
 	done
-	sleep $4
+	sleep $tiempo
 done
 }
-empezarDemonio $1 $2 $3 $4 &
-echo "Se inicio correctamente el demonio su PID es:" $!
+empezarDemonio $directorio $tiempo &
+echo "Se inicio correctamente el demonio su PID es: $! y esta observando el directorio $directorio"
