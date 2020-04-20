@@ -50,9 +50,15 @@ empezarDemonio()
 {
 	directorio=$1
 	tiempo=$2
-	
+	archivos=""
 	while true; do
-	archivos=$(ls $directorio)
+	sleep $tiempo
+	archivosNuevos=$(ls $directorio)
+	if [[ $archivos != "" && $archivos == $archivosNuevos ]]
+	then
+		continue;
+	fi
+	archivos=$archivosNuevos
 	for filename in $archivos; do
 
 		if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
@@ -78,7 +84,6 @@ empezarDemonio()
 			fi
 		done
 	done
-	sleep $tiempo
 done
 }
 empezarDemonio $directorio $tiempo &
