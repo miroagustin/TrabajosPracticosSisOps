@@ -40,6 +40,7 @@ then
 	echo "El path no existe o no es un directorio"
 	exit 1;
 fi
+
 if [[ $tiempo =~ [^1-9]+ ]]
 then
 	echo "El segundo parametros no es un numero mayor a 0"
@@ -49,27 +50,33 @@ empezarDemonio()
 {
 	directorio=$1
 	tiempo=$2
+	
 	while true; do
-	for filename in `ls $directorio`; do
+	archivos=$(ls $directorio)
+	for filename in $archivos; do
 
 		if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
 		then
 			echo "Se elimina $filename por tener un nombre invalido"
+			archivos=${archivos//$filename /}
 			rm "$directorio/$filename"
+			break;
 		fi
-		if test -e "$directorio/$filename"
-		then
-			nombreArchivo=`echo $filename | cut -d'-' -f 1`
-			semanaArchivo=`echo $filename | cut -d'-' -f 2 | cut -d'.' -f 1`
-			for candidato in `ls $directorio | grep $nombreArchivo`; do
-				semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
-				if [[ $semanaArchivo > $semanaArchivoCandidato ]] && test -e "$directorio/$candidato"
-				then
-					echo "Se encontro $nombreArchivo se elimina $candidato por ser mas antiguo"
-					rm "$directorio/$candidato"
-				fi
-			done
-		fi
+		nombreArchivo=`echo $filename | cut -d'-' -f 1`
+		semanaArchivo=`echo $filename | cut -d'-' -f 2 | cut -d'.' -f 1`
+		for candidato in $archivos; do
+			semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
+			if [[ ! $candidato == *"$nombreArchivo"* ]]
+			then
+				continue;
+			fi
+			if [ $semanaArchivo -gt $semanaArchivoCandidato ]
+			then
+				echo "Se encontro $filename con semana $semanaArchivo se elimina $candidato con semana $semanaArchivoCandidato por ser mas antiguo"
+				archivos=${archivos//$candidato /}
+				rm "$directorio/$candidato"
+			fi
+		done
 	done
 	sleep $tiempo
 done
