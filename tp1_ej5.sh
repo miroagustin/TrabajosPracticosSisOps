@@ -45,16 +45,10 @@ awk '
   BEGIN {
     FS = "|";
     NR>1;
-    printf("Materia,Final,Recursan,Recuperan,Abandonaron\n");
+    printf("\"Materia\",\"Final\",\"Recursan\",\"Recuperan\",\"Abandonaron\"\n");
   }
   {
     materia = $2
-
-    if (!(materia in materias)) {
-      for (i=0;i<4;i++) {
-        materias[materia][i] = 0;
-      }
-    }
 
     nota_primer_parcial = $3;
     nota_segundo_parcial = $4;
@@ -91,7 +85,7 @@ awk '
   }
   END {
     for (materia in materias) {
-      printf("%d,%d,%d,%d,%d\n", materia, materias[materia][0], materias[materia][1], materias[materia][2], materias[materia][3]);
+      printf("\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"\n", materia, materias[materia][0], materias[materia][1], materias[materia][2], materias[materia][3]);
     }
   }
 ' $archivo_entrada > salida.out
