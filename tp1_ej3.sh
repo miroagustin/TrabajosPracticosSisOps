@@ -64,7 +64,7 @@ empezarDemonio()
 		if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
 		then
 			archivos=${archivos//$filename /}
-			break;
+			continue;
 		fi
 		nombreArchivo=`echo $filename | cut -d'-' -f 1`
 		semanaArchivo=`echo $filename | cut -d'-' -f 2 | cut -d'.' -f 1`
