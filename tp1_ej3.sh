@@ -63,9 +63,7 @@ empezarDemonio()
 
 		if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
 		then
-			echo "Se elimina $filename por tener un nombre invalido"
 			archivos=${archivos//$filename /}
-			rm "$directorio/$filename"
 			break;
 		fi
 		nombreArchivo=`echo $filename | cut -d'-' -f 1`
