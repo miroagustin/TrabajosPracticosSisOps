@@ -1,5 +1,5 @@
 #! /bin/bash
-#TP1 - Ejercicio 3 - Primera Entrega
+#TP1 - Ejercicio 4 - Primera Entrega
 #Integrantes:
 #Parra, Martin                  DNI:40012233
 #Di Vito, Tomas                 DNI:39340228
