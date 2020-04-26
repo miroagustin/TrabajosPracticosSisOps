@@ -51,26 +51,25 @@ archivo_entrada=$2
 awk '
   BEGIN {
     FS = "|";
-    NR>1;
     printf("\"Materia\",\"Final\",\"Recursan\",\"Recuperan\",\"Abandonaron\"\n");
   }
-  {
+  NR>1 {
     materia = $2
 
-    nota_primer_parcial = $3;
-    nota_segundo_parcial = $4;
-    nota_recuperatorio = $5;
-    nota_final = $6;
+    nota_primer_parcial = $3+0;
+    nota_segundo_parcial = $4+0;
+    nota_recuperatorio = $5+0;
+    nota_final = $6+0;
 
     if (nota_final > 0) {
       if (nota_final < 4) {
         materias[materia][1]++
       }
     } else {
-      if (nota_recu > 0) {
-        if (nota_recu < 4) {
+      if (nota_recuperatorio > 0) {
+        if (nota_recuperatorio < 4) {
           materias[materia][1]++
-        } else if (nota_recu >= 4 || nota_recu <= 6) {
+        } else if (nota_recuperatorio >= 4 || nota_recuperatorio <= 6) {
           materias[materia][0]++
         } else {
           if (nota_primer_parcial < 7 && nota_segundo_parcial < 7) {
@@ -82,10 +81,18 @@ awk '
           materias[materia][3]++
         } else if (nota_primer_parcial < 4 && nota_segundo_parcial < 4) {
           materias[materia][1]++
+        } else if (nota_primer_parcial < 4 && nota_segundo_parcial >= 4) {
+          materias[materia][2]++
+        } else if (nota_segundo_parcial < 4 && nota_primer_parcial >= 4) {
+          materias[materia][2]++
+        } else if (nota_primer_parcial <= 6 && nota_segundo_parcial > 7) {
+          materias[materia][2]++
+        } else if (nota_segundo_parcial <= 6 && nota_primer_parcial > 7) {
+          materias[materia][2]++
         } else if (nota_primer_parcial <= 6 && nota_segundo_parcial >= 4) {
-          materias[materia][2]++
+          materias[materia][0]++
         } else if (nota_segundo_parcial <= 6 && nota_primer_parcial >= 4) {
-          materias[materia][2]++
+          materias[materia][0]++
         }
       }
     }
