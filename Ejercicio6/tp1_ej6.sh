@@ -1,4 +1,11 @@
 #!/bin/bash
+#TP1 - Ejercicio 4 - Primera Entrega
+#Integrantes:
+#Parra, Martin                  DNI:40012233
+#Di Vito, Tomas                 DNI:39340228
+#Fernandez, Matias Gabriel      DNI:38613699
+#Mirò, Agustin                  DNI:40923621
+#Estevez, Adrian                DNI:39325872
 
 if [[ $1 == "--help" || $1 == "-h" || $1 == "-?" ]]
 then
@@ -8,12 +15,12 @@ then
 
         Ejercicio 6 Trabajo Practico 1
 
-        Este script debe ejecutarse como tp1_ej6.sh -f directorioArchivoEntrada
-
+        Este script debe ejecutarse como ./tp1_ej6.sh -f directorioArchivoEntrada
+        
         El script procesará el archivos de entrada, sumando todos los numeros fraccionarios contenidos en el.
         El resultado sera otro numero fraccionario, simplificado, el cual se mostrara por pantalla ademas de guardarse dentro de un archivo llamado salida.out..
 
-        El directorio de prueba es lotes_tp6
+        El directorio de prueba es lotes_ej6
 
         "
         exit 0;

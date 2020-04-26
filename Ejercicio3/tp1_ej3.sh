@@ -1,4 +1,11 @@
 #!/bin/bash
+#TP1 - Ejercicio 3 - Primera Entrega
+#Integrantes:
+#Parra, Martin                  DNI:40012233
+#Di Vito, Tomas                 DNI:39340228
+#Fernandez, Matias Gabriel      DNI:38613699
+#Mirò, Agustin                  DNI:40923621
+#Estevez, Adrian                DNI:39325872
 if [[ $1 == "-h" || $1 == "-?" || $1 == "--help" ]]
 then
 	echo "
@@ -11,6 +18,8 @@ then
 	Este script toma 2 parametros:
        	El primero es el path del directorio a revisar en la forma -p pathDirectorio
 	El segundo es el tiempo que espera para revisar de nuevo el directorio en la forma -t tiempo
+
+	El directorio de prueba es lotes_ej3		
 	"
 	exit 1;
 fi

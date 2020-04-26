@@ -1,4 +1,11 @@
 #!/bin/bash
+#TP1 - Ejercicio 1 - Primera Entrega
+#Integrantes:
+#Parra, Martin                  DNI:40012233
+#Di Vito, Tomas                 DNI:39340228
+#Fernandez, Matias Gabriel      DNI:38613699
+#Mirò, Agustin                  DNI:40923621
+#Estevez, Adrian                DNI:39325872
 ErrorS()
 {
     echo "Error La Sintaxis del script es la siguiente: "

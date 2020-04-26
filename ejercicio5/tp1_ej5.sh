@@ -1,3 +1,10 @@
+#TP1 - Ejercicio 4 - Primera Entrega
+#Integrantes:
+#Parra, Martin                  DNI:40012233
+#Di Vito, Tomas                 DNI:39340228
+#Fernandez, Matias Gabriel      DNI:38613699
+#Mirò, Agustin                  DNI:40923621
+#Estevez, Adrian                DNI:39325872
 if [[ $1 == "-h" || $1 == "-?" || $1 == "--help" ]]
 then
   echo "
@@ -5,8 +12,8 @@ then
   Autor: Grupo 4
 
   Se procesa un archivo pasado por parametro como:
-  -f nombre_del_archivo
-
+  -f nombre_del_archivo (ejemplo ' ./tp1_ej5.sh -f entradas/entrada_1.txt ')
+  
   y se generara un archivo resultado con la siguiente informacion:
 
   - Cantidad de alumnos aptos para rendir final (sin final dado y notas en

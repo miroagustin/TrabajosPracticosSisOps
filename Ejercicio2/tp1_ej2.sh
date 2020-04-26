@@ -1,4 +1,11 @@
 #!/bin/bash
+#TP1 - Ejercicio 2 - Primera Entrega
+#Integrantes:
+#Parra, Martin                  DNI:40012233
+#Di Vito, Tomas                 DNI:39340228
+#Fernandez, Matias Gabriel      DNI:38613699
+#Mirò, Agustin                  DNI:40923621
+#Estevez, Adrian                DNI:39325872
 PIFS=IFS
 IFS="
 "
@@ -9,7 +16,7 @@ then
 	Ejercicio 2 Trabajo Practico 1
 
 	Este script debe ejecutarse como tp1_ej2.sh -p directorioLogsLlamada
-
+	
 	El script procesara los archivos de logs de llamada en el directorio y generara reportes sobre cada uno:
 
 	- Promedio de tiempo de las llamadas realizadas por dia.
@@ -18,7 +25,7 @@ then
 	- Cantidad de llamadas que no superan la media de tiempo por dia.
 	- El usuario con mas llamadas debajo del promedio semanal.
 
-	El directorio de prueba es lotes_tp1
+	El directorio de prueba es lotes_ej2
 
 	"
 	exit 0;
