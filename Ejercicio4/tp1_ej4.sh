@@ -90,7 +90,7 @@ for nombreLog in $(ls $logs); do
 done
 
 if ([ $# == 6 ] && [ "$5" == "-e" ]); then
-    for nombreEmpresa in $nombresEmpresas; do
+    for nombreEmpresa in "${nombresEmpresas[@]}"; do
         if [ "$6" == "$nombreEmpresa" ]; then
             zipearEmpresa "$6" $out $logs
             echo "Se ha creado el zip de la empresa: "$6            
