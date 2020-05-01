@@ -63,13 +63,12 @@ empezarDemonio()
 	while true; do
 	sleep $tiempo
 	archivosNuevos=$(ls $directorio)
-	if [[ $archivos != "" && $archivos == $archivosNuevos ]]
+	if [[ $archivos == $archivosNuevos ]]
 	then
 		continue;
 	fi
 	archivos=$archivosNuevos
 	for filename in $archivos; do
-
 		if ! [[ $filename =~ [A-Za-z]+-[0-9]+(\.log) ]]
 		then
 			archivos=${archivos//$filename /}
@@ -78,6 +77,10 @@ empezarDemonio()
 		nombreArchivo=`echo $filename | cut -d'-' -f 1`
 		semanaArchivo=`echo $filename | cut -d'-' -f 2 | cut -d'.' -f 1`
 		for candidato in $archivos; do
+			if ! test -e $directorio/$candidato
+			then
+				continue;
+			fi
 			semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
 			if [[ ! $candidato == *"$nombreArchivo"* ]]
 			then
@@ -85,7 +88,8 @@ empezarDemonio()
 			fi
 			if [ $semanaArchivo -gt $semanaArchivoCandidato ]
 			then
-				echo "Se encontro $filename con semana $semanaArchivo se elimina $candidato con semana $semanaArchivoCandidato por ser mas antiguo"
+				echo "
+Se encontro $filename con semana $semanaArchivo se elimina $candidato con semana $semanaArchivoCandidato"
 				archivos=${archivos//$candidato /}
 				rm "$directorio/$candidato"
 			fi
