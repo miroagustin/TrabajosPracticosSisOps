@@ -1,8 +1,11 @@
-# ejercicio2.ps1 - TRABAJO PRÁCTICO 2 - EJERCICIO 2
-# TRABAJO PRÁCTICO 2
+# TRABAJO PRÁCTICO 2 - EJERCICIO 2
 # PRIMERA ENTREGA 
 # INTEGRANTES:
-
+# Parra, Martin                  DNI:40012233
+# Di Vito, Tomas                 DNI:39340228
+# Fernandez, Matias Gabriel      DNI:38613699
+# Mirò, Agustin                  DNI:40923621
+# Estevez, Adrian                DNI:39325872
 <#
 .SYNOPSIS
         El script realiza dos funciones no simultaneas cada cierto tiempo.
