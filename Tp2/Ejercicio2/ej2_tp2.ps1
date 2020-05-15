@@ -20,10 +20,10 @@
 
 #>
 
-# Param (
-#     [Parameter(Position = 1, Mandatory = $true)]
-#     [String] $Path = 'lote'
-# )
+Param (
+    [Parameter(Position = 1, Mandatory = $true)]
+    [String] $Path
+)
 
 $ErrorActionPreference = "Stop"
 function magia()
@@ -178,6 +178,4 @@ function magia()
     Write-Host ""
 }
 
-magia 'lote'
-Write-Host $regex
-
+magia -Path $Path
