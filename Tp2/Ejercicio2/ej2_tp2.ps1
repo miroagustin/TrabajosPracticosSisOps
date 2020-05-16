@@ -126,21 +126,21 @@ function magia()
         Write-Host "promedio de tiempo en el dia (Minutos):      " $Promedio_dia_total 
         Write-Host ""
         Write-Host "Cantidad de llamadas por debajo de la media: " $llamada_debajo_media_dia
-        
         Write-Host ""
+        Write-Host "---------------------------------------"
         Write-Host "Duracion de llamadas del dia (Minutos)"
-        Write-Host "" 
-        foreach ($a in $duracionDiaUsuario){$a}
+        Write-Host "---------------------------------------" 
+        $duracionDiaUsuario | Format-List
         
-        Write-Host ""
+        Write-Host "----------------------------------------------------"
         Write-Host "Promedio de tiempo de llamadas por usuario (Minutos)"
-        Write-Host "" 
-        foreach ($c in $promedio){$c}
+        Write-Host "----------------------------------------------------" 
+        $promedio | Format-List
 
-        Write-Host "" 
+        Write-Host "-----------------------------" 
         Write-Host "cantidad de llamadas del dia"
-        Write-Host "" 
-        foreach ($b in $cantidad_de_llamadas){$b}
+        Write-Host "-----------------------------" 
+        $cantidad_de_llamadas | Format-List
         Write-Host "" 
 
     }
@@ -159,7 +159,7 @@ function magia()
     {
        if($contador -le 3)
        {
-        Write-Host "-"$item.Key "con " $item.Value " minutos"
+        $item | Format-List
        }
        else{break}
        $contador=$contador+1
@@ -173,7 +173,7 @@ function magia()
     {
        if($contador -lt 1)
        {
-        write-host "-"$item.Name " con " $item.Value " llamadas"
+        $item | Format-List
        }
        else{break}
         $contador=$contador+1
