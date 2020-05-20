@@ -18,27 +18,34 @@ zipearEmpresa(){
     bandera=0
     mkdir $empresa
     for nombreLog in $(ls $logs); do
-        nombreLeido="${nombreLog%%-*}"
-        numeroActual=$(($(sed -e 's/\(^.*-\)\(.*\)\(\..*$\)/\2/' <<< $nombreLog)))
-        if [ "$nombreLeido" == "$empresa" ]; then
-            if [ $bandera -eq 0 ]; then
-                semanaMayor=$numeroActual
-                nombreSemanaMayor="$nombreLog"
-                bandera=1
-            elif [ $numeroActual -gt $semanaMayor ]; then
-                mv "${logs}/${nombreSemanaMayor}" $empresa
-                semanaMayor=$numeroActual  
-                nombreSemanaMayor="$nombreLog"
-            else
-                nombreLog="${logs}/${nombreLog}"
-                mv "$nombreLog" $empresa       
-            fi        
-        fi       
+        if ! [[ $nombreLog =~ [A-Za-z]+-[0-9]+(\.log) ]]; then
+            continue
+        else
+            nombreLeido="${nombreLog%%-*}"
+            numeroActual=$(($(sed -e 's/\(^.*-\)\(.*\)\(\..*$\)/\2/' <<< $nombreLog)))
+            if [ "$nombreLeido" == "$empresa" ]; then
+                if [ $bandera -eq 0 ]; then
+                    semanaMayor=$numeroActual
+                    nombreSemanaMayor="$nombreLog"
+                    bandera=1
+                elif [ $numeroActual -gt $semanaMayor ]; then
+                    mv "${logs}/${nombreSemanaMayor}" $empresa
+                    semanaMayor=$numeroActual  
+                    nombreSemanaMayor="$nombreLog"
+                else
+                    nombreLog="${logs}/${nombreLog}"
+                    mv "$nombreLog" $empresa       
+                fi        
+            fi  
+        fi     
     done
+    ret=0
     if [ "$(ls -A $empresa)" ]; then
         zip -r "${out}/${empresa}.zip" $empresa
+        ret=1
     fi
     rm -r $empresa
+    return $ret
 }
 
 if ([ $# != 4 ] && [ $# != 6 ]); then
@@ -81,28 +88,41 @@ primerNombreDistinto=""
 i=0
 
 for nombreLog in $(ls $logs); do
-    nombreLeido="${nombreLog%%-*}"
-    if [ "$nombreLeido" != "$primerNombreDistinto" ]; then
-        primerNombreDistinto=$nombreLeido
-        nombresEmpresas[i]=$primerNombreDistinto
-        ((i++))
-    fi       
+    if ! [[ $nombreLog =~ [A-Za-z]+-[0-9]+(\.log) ]]; then
+        continue
+    else  
+        nombreLeido="${nombreLog%%-*}"
+        if [ "$nombreLeido" != "$primerNombreDistinto" ]; then
+            primerNombreDistinto=$nombreLeido
+            nombresEmpresas[i]=$primerNombreDistinto
+            ((i++))
+        fi
+    fi
 done
 
 if ([ $# == 6 ] && [ "$5" == "-e" ]); then
     for nombreEmpresa in "${nombresEmpresas[@]}"; do
         if [ "$6" == "$nombreEmpresa" ]; then
             zipearEmpresa "$6" $out $logs
-            echo "Se ha creado el zip de la empresa: "$6            
-            exit
+            if [ $? -eq 1 ]; then
+                echo "Se ha creado el zip de la empresa: "$6            
+                exit
+            else
+                echo "No hay archivos por zipear de la empresa: "$6
+                exit
+            fi
         fi
     done
     echo "No se encontro la empresa indicada."
 elif [ $# == 4 ]; then
     for empresa in "${nombresEmpresas[@]}"; do
         zipearEmpresa $empresa $out $logs
+        if [ $? -eq 1 ]; then
+            echo "Se ha creado el zip de la empresa: "$empresa
+        else
+            echo "No hay archivos por zipear de la empresa: "$empresa
+        fi
     done
-    echo "Se han creado los zips correspondientes a cada una de las empresas"
 else
     echo "Error de llamada. Para ver ejemplos de ejecuciòn ingrese la opción -h, -? o -help." 
     exit
