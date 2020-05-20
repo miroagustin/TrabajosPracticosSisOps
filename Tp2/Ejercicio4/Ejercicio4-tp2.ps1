@@ -65,25 +65,26 @@ function Zipear-Empresa {
     $bandera=0
     New-Item -Path "." -Name $Empresa -ItemType "directory"  -Force | Out-Null
     Get-ChildItem $Directorio -Name | ForEach-Object -Process {
-        
-        $NombreLeido = $_.Substring(0,$_.indexOf("-"))
-        $inicio = $_.indexOf("-")+1
-        $fin = $_.indexOf(".")
-        $nroActual = $_.Substring($inicio, $fin - $inicio) -as [int]
-        if($NombreLeido -eq $Empresa) {
-            if($bandera -eq 0){
-                $semanaMayor=$nroActual
-                $nombreSemanaMayor=$_
-                $bandera=1
-            } else {
-                if ($nroActual -gt $semanaMayor) {
-                        Move-Item -Path "$Directorio/$nombreSemanaMayor" -Destination $Empresa
-                        $semanaMayor=$nroActual  
-                        $nombreSemanaMayor=$_
-                    } else {
-                        Move-Item -Path "$Directorio/$_" -Destination $Empresa
-                    }  
-                }
+        if ($_ -match '[A-Za-z]-[0-9]+\.log') {
+            $NombreLeido = $_.Substring(0,$_.indexOf("-"))
+            $inicio = $_.indexOf("-")+1
+            $fin = $_.indexOf(".")
+            $nroActual = $_.Substring($inicio, $fin - $inicio) -as [int]
+            if($NombreLeido -eq $Empresa) {
+                if($bandera -eq 0){
+                    $semanaMayor=$nroActual
+                    $nombreSemanaMayor=$_
+                    $bandera=1
+                } else {
+                    if ($nroActual -gt $semanaMayor) {
+                            Move-Item -Path "$Directorio/$nombreSemanaMayor" -Destination $Empresa
+                            $semanaMayor=$nroActual  
+                            $nombreSemanaMayor=$_
+                        } else {
+                            Move-Item -Path "$Directorio/$_" -Destination $Empresa
+                        }  
+                    }
+            }
         }
     }
     if((Get-ChildItem $Empresa | Measure-Object).Count -ne 0) {
@@ -100,13 +101,13 @@ $NombreEmpresas = @()
 $PrimerNombreDistinto = ""
 
 Get-ChildItem $Directorio -Name | ForEach-Object -Process {
-
-    $NombreLeido = $_.Substring(0,$_.indexOf("-"))
-    if($NombreLeido -ne $PrimerNombreDistinto) {
-        $PrimerNombreDistinto = $NombreLeido
-        $NombreEmpresas += $PrimerNombreDistinto
+    if ($_ -match '[A-Za-z]-[0-9]+\.log') {
+        $NombreLeido = $_.Substring(0,$_.indexOf("-"))
+        if($NombreLeido -ne $PrimerNombreDistinto) {
+            $PrimerNombreDistinto = $NombreLeido
+            $NombreEmpresas += $PrimerNombreDistinto
+        }
     }
-
 } 
 
  if($Empresa){
