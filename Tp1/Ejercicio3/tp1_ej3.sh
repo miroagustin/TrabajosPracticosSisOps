@@ -82,7 +82,7 @@ empezarDemonio()
 				continue;
 			fi
 			semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
-			if [[ ! $candidato == *"$nombreArchivo"* ]]
+			if [[ ! $candidato == *"$nombreArchivo"* || ! $semanaArchivoCandidato =~ [0-9]+ ]]
 			then
 				continue;
 			fi
