@@ -14,12 +14,11 @@
         -Los tres usuarios con mas llamadas en la semana
         -Informar cuantas llamadas no superan la media de tiempo por dia y la persona con mas llamadas que no la supero en la semana
 .DESCRIPTION
-        El script recibe como primer parametro la -Path el cual lo que viene a continuacion es la ruta de acceso
+        El script recibe como primer parametro -Path el cual lo que viene a continuacion es la ruta de acceso
         parametro el directorio a analizar. Si no recibe segundo parametro
         se toma por defecto el directorio en el que se encuentra ejecutando el script.
 .EXAMPLE
-        .\ejercicio5.ps1 -Path
-        .\lote
+        ./ej2_tp2.ps1 -Path ./lote
 
 #>
 
@@ -29,7 +28,7 @@ Param (
 )
 
 $ErrorActionPreference = "Stop"
-function magia()
+function resolver()
 {
     Param ([string]$Path)
     $archivos=Get-ChildItem $Path
@@ -181,4 +180,4 @@ function magia()
     Write-Host ""
 }
 
-magia -Path $Path
+resolver -Path $Path

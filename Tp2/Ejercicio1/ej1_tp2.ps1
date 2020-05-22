@@ -9,7 +9,7 @@
 
 Param (
     [Parameter(Position = 1, Mandatory = $false)]
-    [String] $pathsalida = "./procesos.txt",
+    [String] $pathsalida = ".\procesos.txt",
     [int] $cantidad = 3
 )
 $existe = Test-Path $pathsalida
@@ -25,10 +25,6 @@ if ( $existe -eq $true){
     Write-Host "El path no existe"
 }
 
-#A) El objetivo del script es grabar en un archivo de texto (ingresado por parametro) todos los procesos que hay en ejecucion en ese momento
-#   Tambien muestra por pantalla los primeros 3 procesos de la lista.
-#B) No no agregaria ninguna otra validacion ya que si el usuario ingresa un archivo no existente se le muestra por pantalla que no existe, 
-#   y lo mismo sucederia si el archivo procesos.txt no existe (en caso de que no se ingresen parametros).
+#A) El objetivo del script es grabar en un archivo de texto (ingresado por parametro) todos los procesos que hay en ejecucion en ese momento, ademas, muestra por pantalla los primeros 3 procesos de la lista.
+#B) En mi opinion no agregaria otra validacion ya que si el usuario ingresa un archivo no existente se le muestra por pantalla que no existe, lo mismo sucederia si el archivo procesos.txt no existe (en caso de que no se ingresen parametros).
 #C) Si no se ingresan parametros los procesos se guardarian en el archivo "procesos.txt".
-
-#FIN DEL SCRIPT
