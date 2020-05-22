@@ -16,7 +16,7 @@ then
 	el path ingresado y borra los registros de semanas anteriores cuando se crea uno nuevo.
 
 	Este script toma 2 parametros:
-       	El primero es el path del directorio a revisar en la forma -p pathDirectorio
+       	El primero es el path del directorio a revisar en la forma -f pathDirectorio
 	El segundo es el tiempo que espera para revisar de nuevo el directorio en la forma -t tiempo
 
 	El directorio de prueba es lotes_ej3		
@@ -34,7 +34,7 @@ for parametro in "$@"
 do
 	idx=$((idx+1))
 	proximo_parametro=$(echo $@ | cut -d' ' -f $idx)
-	if [[ $parametro == "-p" ]]
+	if [[ $parametro == "-f" ]]
 	then
 		directorio=$proximo_parametro
 	fi
@@ -82,7 +82,7 @@ empezarDemonio()
 				continue;
 			fi
 			semanaArchivoCandidato=`echo $candidato | cut -d'-' -f 2 | cut -d'.' -f 1`
-			if [[ ! $candidato == *"$nombreArchivo"* || ! $semanaArchivoCandidato =~ [0-9]+ ]]
+			if [[ ! $candidato == *"$nombreArchivo"* || ! $candidato =~ [A-Za-z]+-[0-9]+(\.log) ]]
 			then
 				continue;
 			fi
