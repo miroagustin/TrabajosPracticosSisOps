@@ -1,11 +1,18 @@
-# TRABAJO PRÁCTICO 2 - EJERCICIO 1
-# PRIMERA ENTREGA 
-# INTEGRANTES:
-# Parra, Martin                  DNI:40012233
-# Di Vito, Tomas                 DNI:39340228
-# Fernandez, Matias Gabriel      DNI:38613699
-# Mirò, Agustin                  DNI:40923621
-# Estevez, Adrian                DNI:39325872
+<#
+.DESCRIPTION
+        #A) El objetivo del script es grabar en un archivo de texto (ingresado por parametro) todos los procesos que hay en ejecucion en ese momento, ademas, muestra por pantalla los primeros 3 procesos de la lista.
+        #B) En mi opinion no agregaria otra validacion ya que si el usuario ingresa un archivo no existente se le muestra por pantalla que no existe, lo mismo sucederia si el archivo procesos.txt no existe (en caso de que no se ingresen parametros).
+        #C) Si no se ingresan parametros los procesos se guardarian en el archivo "procesos.txt".
+.NOTES
+        TRABAJO PRÁCTICO 2 - EJERCICIO 2
+        PRIMERA ENTREGA 
+        INTEGRANTES:
+        Parra, Martin                  DNI:40012233
+        Di Vito, Tomas                 DNI:39340228
+        Fernandez, Matias Gabriel      DNI:38613699
+        Mirò, Agustin                  DNI:40923621
+        Estevez, Adrian                DNI:39325872
+#>
 
 Param (
     [Parameter(Position = 1, Mandatory = $false)]
@@ -24,7 +31,3 @@ if ( $existe -eq $true){
 } else{
     Write-Host "El path no existe"
 }
-
-#A) El objetivo del script es grabar en un archivo de texto (ingresado por parametro) todos los procesos que hay en ejecucion en ese momento, ademas, muestra por pantalla los primeros 3 procesos de la lista.
-#B) En mi opinion no agregaria otra validacion ya que si el usuario ingresa un archivo no existente se le muestra por pantalla que no existe, lo mismo sucederia si el archivo procesos.txt no existe (en caso de que no se ingresen parametros).
-#C) Si no se ingresan parametros los procesos se guardarian en el archivo "procesos.txt".
