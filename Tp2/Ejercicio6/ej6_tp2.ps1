@@ -1,12 +1,3 @@
-# ej6_tp2.ps1 - TRABAJO PRACTICO 2 - EJERCICIO 6
-# TRABAJO PRACTICO 2
-# PRIMERA ENTREGA 
-# INTEGRANTES:
-# Parra, Martin                  DNI:40012233
-# Di Vito, Tomas                 DNI:39340228
-# Fernandez, Matias Gabriel      DNI:38613699
-# Miro, Agustin                  DNI:40923621
-# Estevez, Adrian                DNI:39325872
 <#
 .SYNOPSIS
         El script realiza la suma de todos los numeros fraccionarios pasados dentro de un archivo.
@@ -16,7 +7,15 @@
 .EXAMPLE
         .\ej6_tp2.ps1 Path\archivo
 .NOTES
-
+        ej6_tp2.ps1 - TRABAJO PRACTICO 2 - EJERCICIO 6
+        TRABAJO PRACTICO 2
+        PRIMERA ENTREGA 
+        INTEGRANTES:
+        Parra, Martin                  DNI:40012233
+        Di Vito, Tomas                 DNI:39340228
+        Fernandez, Matias Gabriel      DNI:38613699
+        Miro, Agustin                  DNI:40923621
+        Estevez, Adrian                DNI:39325872
 .INPUTS
 
 .OUTPUTS
