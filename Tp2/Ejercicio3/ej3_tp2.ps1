@@ -1,20 +1,5 @@
-Param (
-    [ValidateScript( {
-            if (-Not ($_ | Test-Path) ) {
-                throw "El archivo o carpeta no existe" 
-            }
-            if (($_ | Test-Path -PathType Leaf) ) {
-                throw "El parametro Directorio debe ser una carpeta"
-            }
-            return $true
-        })]
-    
-    [string]$Directorio
-)
-
-$global:Directorio = $Directorio
 <#
-.Synopsis
+.SYNOPSIS
 Punto 3 del TP2 de Sistemas Operativos 1er Cuatrimestre 2020
 
 Parra, Martin                  DNI:40012233
@@ -41,6 +26,25 @@ Estevez, Adrian                DNI:39325872
 .NOTES
 Este Script usa un evento del FileSystemWatcher que cuando se crea un nuevo archivo ejecuta su funcionamiento
 #>
+Param (
+    
+    [Parameter(Position=0, 
+               Mandatory=$true,
+               HelpMessage = "Ingrese la ruta a observar por el script")]
+    [ValidateScript( {
+            if (-Not ($_ | Test-Path) ) {
+                throw "El archivo o carpeta no existe" 
+            }
+            if (($_ | Test-Path -PathType Leaf) ) {
+                throw "El parametro Directorio debe ser una carpeta"
+            }
+            return $true
+        })]
+    
+    [string]$Directorio 
+)
+
+$global:Directorio = $Directorio
 function global:Start-Demonio {
     $ErrorActionPreference = "Stop"
     $ArchivosViejos = ""
