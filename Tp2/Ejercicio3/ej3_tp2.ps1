@@ -48,7 +48,7 @@ $global:Directorio = $Directorio
 function global:Start-Demonio {
     $ErrorActionPreference = "Stop"
     $ArchivosViejos = ""
-    $RegexArchivosInvalidos = "[A-Za-z]+-[0-9]+(\.log)"
+    $RegexArchivosInvalidos = "^[A-Za-z]+-[0-9]+(\.log)$"
     $proveedores = @{ }
     $ArchivosValidos = Get-ChildItem -Path $Directorio | Where-Object -FilterScript { $_.Name -match $RegexArchivosInvalidos }
     if ($ArchivosViejos -eq $ArchivosValidos) {
