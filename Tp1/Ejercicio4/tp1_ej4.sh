@@ -18,11 +18,11 @@ zipearEmpresa(){
     bandera=0
     mkdir $empresa
     for nombreLog in $(ls $logs); do
-        if ! [[ $nombreLog =~ [A-Za-z]+-[0-9]+(\.log) ]]; then
+        if ! [[ $nombreLog =~ ^[A-Za-z]+-[0-9]+(\.log)$ ]]; then
             continue
         else
-            nombreLeido="${nombreLog%%-*}"
-            numeroActual=$(($(sed -e 's/\(^.*-\)\(.*\)\(\..*$\)/\2/' <<< $nombreLog)))
+            nombreLeido=`echo $nombreLog | cut -d'-' -f 1`
+            numeroActual=`echo $nombreLog | cut -d'-' -f 2 | cut -d'.' -f 1`
             if [ "$nombreLeido" == "$empresa" ]; then
                 if [ $bandera -eq 0 ]; then
                     semanaMayor=$numeroActual
@@ -88,10 +88,10 @@ primerNombreDistinto=""
 i=0
 
 for nombreLog in $(ls $logs); do
-    if ! [[ $nombreLog =~ [A-Za-z]+-[0-9]+(\.log) ]]; then
+    if ! [[ $nombreLog =~ ^[A-Za-z]+-[0-9]+(\.log)$ ]]; then
         continue
     else  
-        nombreLeido="${nombreLog%%-*}"
+        nombreLeido=`echo $nombreLog | cut -d'-' -f 1`
         if [ "$nombreLeido" != "$primerNombreDistinto" ]; then
             primerNombreDistinto=$nombreLeido
             nombresEmpresas[i]=$primerNombreDistinto
