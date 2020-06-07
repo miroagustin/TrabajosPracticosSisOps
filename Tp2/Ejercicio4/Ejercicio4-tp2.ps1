@@ -65,7 +65,7 @@ function Zipear-Empresa {
     $bandera=0
     New-Item -Path "." -Name $Empresa -ItemType "directory"  -Force | Out-Null
     Get-ChildItem $Directorio -Name | ForEach-Object -Process {
-        if ($_ -match '[A-Za-z]-[0-9]+\.log') {
+        if ($_ -match '^[A-Za-z]+-[0-9]+\.log$') {
             $NombreLeido = $_.Substring(0,$_.indexOf("-"))
             $inicio = $_.indexOf("-")+1
             $fin = $_.indexOf(".")
@@ -101,7 +101,7 @@ $NombreEmpresas = @()
 $PrimerNombreDistinto = ""
 
 Get-ChildItem $Directorio -Name | ForEach-Object -Process {
-    if ($_ -match '[A-Za-z]-[0-9]+\.log') {
+    if ($_ -match '^[A-Za-z]+-[0-9]+\.log$') {
         $NombreLeido = $_.Substring(0,$_.indexOf("-"))
         if($NombreLeido -ne $PrimerNombreDistinto) {
             $PrimerNombreDistinto = $NombreLeido
