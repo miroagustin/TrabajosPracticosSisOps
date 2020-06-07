@@ -75,9 +75,9 @@ Process {
           $materias[$nom.IdMateria].Recuperan++
         } elseif ($SegundoParcial -lt 4 -and $PrimerParcial -ge 4) {
           $materias[$nom.IdMateria].Recuperan++
-        } elseif ($PrimerParcial -le 6 -and $SegundoParcial -gt 7) {
+        } elseif ($PrimerParcial -le 6 -and $SegundoParcial -ge 7) {
           $materias[$nom.IdMateria].Recuperan++
-        } elseif ($SegundoParcial -le 6 -and $PrimerParcial -gt 7) {
+        } elseif ($SegundoParcial -le 6 -and $PrimerParcial -ge 7) {
           $materias[$nom.IdMateria].Recuperan++
         } elseif ($PrimerParcial -le 6 -and $SegundoParcial -ge 4) {
           $materias[$nom.IdMateria].Final++
