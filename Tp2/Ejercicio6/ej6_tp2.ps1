@@ -17,7 +17,6 @@
         Miro, Agustin                  DNI:40923621
         Estevez, Adrian                DNI:39325872
 .INPUTS
-
 .OUTPUTS
 #>
 
@@ -36,7 +35,8 @@ if(!(Test-Path -Path $Archivo))
 Write-Host "Procesando..."
 
 $fracciones = Get-Content -Path $Archivo
-$fracciones = $fracciones -replace ":"," + "
+#$fracciones = $fracciones -replace ":"," + "
+$fracciones = $fracciones -replace ":"," : "
 $fracciones = $fracciones -replace ","," + "
 $fracciones = $fracciones -replace "-","- "
 if($fracciones.Length -eq 0) { Write-Host "El archivo se encuentra vacío."; return }
@@ -48,7 +48,7 @@ $signo = "+"
 foreach($i in $arr)
 {
         $elemento = $i
-        if($elemento -ne '+' -And $elemento -ne '-')
+        if($elemento -ne '+' -And $elemento -ne '-' -And $elemento -ne ':')
         {
                 if(!($elemento -match "/")) { $elemento = "$elemento/1" }
                 $num2 = $elemento.Substring(0,$elemento.IndexOf("/"))
@@ -61,6 +61,8 @@ foreach($i in $arr)
                 $den1 = $mcm
         }
         if($elemento -eq '+' -Or $elemento -eq '-') { $signo = $elemento }
+        if($elemento -eq ':' -And $signo -eq '-') { $signo = '-' }
+        if($elemento -eq ':' -And $signo -eq '+') { $signo = '+' }
 }
 
 $numerador = $num1
@@ -75,5 +77,5 @@ $MCD = $divisor
 $numerador = ($numerador / $MCD)
 $denominador = ($denominador / $MCD)
 
-Set-Content -Path .\salida.out -Value ("Resultado de la suma recibida del archivo $Archivo" + $2 + ": " + ${signo} + ${numerador} + "/" + ${denominador})
-Write-Host $signo$numerador"/"$denominador
+Set-Content -Path .\salida.out -Value ("Resultado de la suma recibida del archivo $Archivo" + $2 + ": " + ${numerador} + "/" + ${denominador})
+Write-Host $numerador"/"$denominador
