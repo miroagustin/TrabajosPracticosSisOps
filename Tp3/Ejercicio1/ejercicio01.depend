@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1592081817 source:/home/estevezadrian95/Documentos/Git/TrabajosPracticosSisOps/Tp3/ejercicio01/main.c
-	<unistd.h>
-	<sys/wait.h>
-	<sys/types.h>
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-
