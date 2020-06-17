@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define ARRAY_SIZE   7
-#define MALLOC_SIZE 10000
+#define ARRAY_SIZE 10
 
 
 struct nodo
@@ -36,7 +35,7 @@ void main(int argc, char *argv[])
 
 int crear_procesos(int n)
 {
-
+    int estado;
     guardar_info(0,getpid());
     mostrar_info();
 
@@ -47,10 +46,11 @@ int crear_procesos(int n)
         mostrar_info();
         exit(0);
     }
-    else if(h1>1)
-    {
+    else if(h1>0)
+    {   
+        
         pid_t h2 = fork();
-
+        
         if (h2 == 0)
         {
             guardar_info(2,getpid());
@@ -62,7 +62,6 @@ int crear_procesos(int n)
                 guardar_info(4,getpid());
                 mostrar_info();
 
-
                 pid_t bn7 = fork();
                 if(bn7==0)
                 {
@@ -72,7 +71,7 @@ int crear_procesos(int n)
                     for(int i=1;i<=n;i++)
                     {
                         pid_t numero = fork();
-                        if(numero>0) // Si es el padre no hace nada sale
+                        if(numero>0) // Si es el padre Sale ya que el hijo tiene que seguir procreando
                         {
                             break;
                         }
@@ -83,21 +82,21 @@ int crear_procesos(int n)
                         }
                         
                     }    
-                    
                     exit(0);
                 }                
                 
             }else if(n4>0)
             {
-                
                 pid_t n5 = fork();
                 if(n5==0)
                 {
                     guardar_info(5,getpid());
                     mostrar_info();
                     exit(0);
+                }else
+                {
+                    exit(0);    
                 }
-            exit(0);
             }
         exit(0);
         }
@@ -116,12 +115,10 @@ int crear_procesos(int n)
                     mostrar_info();
                     exit(0);
                 }
-                exit(0);
+            exit(0);
             }
         exit(0);
         }
-            
-    exit(0);
     }
 }
 
@@ -136,14 +133,16 @@ void guardar_info(int nro, int pid)
 
 void mostrar_info()
 {
-    for(int i=sizeof(identificadores);i>=0;i--)
+    int ultimo_ID = 0;
+    
+    for(int i=sizeof(identificadores);i>0;i--)
     {
-        if(identificadores[i].id_padre!=0){
-        printf("%01d(%04d) - ", identificadores[i].nro,identificadores[i].id_padre);
+        if(identificadores[i].id_padre!=0 && identificadores[i].nro != 0)
+        {
+            printf("%01d(%04d) - ", identificadores[i].nro,identificadores[i].id_padre);
+        }
     }
-    }
-        
-    printf("\n");
+     printf("%01d(%04d)\n\n", 0,identificadores[0].id_padre);
 }
     
 
