@@ -4,26 +4,40 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include<unistd.h>
+#include <unistd.h>
 #include <pthread.h> // Requiere link con lpthread
+#include <signal.h>
 
-#define PORT 8080
+#define PORT 8001
 
-
+#define CLIENT_CONNECTED 0
+#define CLIENT_MESSAGE 1
+#define SERVER_MESSAGE 2
+#define CLIENT_DISCONNECTION 3
 
 void *connection_handler(void*);
-void cargar_listado(FILE**, char*);
-void log(size_t, void*, char*);
+void cargar_archivo(FILE**, char*, char*);
+void server_log(size_t, int, char*);
+int login(char*, char*);
+void SIGN_HANDLER(int);
 
-pthread_muted_t log_lock;
+pthread_mutex_t log_lock;
+
+FILE* log_file;
+FILE* listado;
 
 int main() {
-  int max_clientes = 30;
+  int max_clientes = 50;
+  int clientes = 0;
+  int contador = 0;
+  pthread_t hilos_cliente[max_clientes];
   int server_socket = 0;
   int client_socket = 0;
 
-  FILE* listado;
-  cargar_listado(&listado, "./listado");
+  cargar_archivo(&listado, "./listado", NULL);
+  cargar_archivo(&log_file, "./server.log", "a+");
+
+  signal(SIGINT, SIGN_HANDLER);
 
   struct sockaddr_in server_addr, client_addr;
 
@@ -40,25 +54,26 @@ int main() {
   // Bindeo del socket
   if (bind(server_socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
     perror("Error al bindear el puerto en el socket");
+    exit(0);
   }
 
-  listen(server_socket, 3);
+  listen(server_socket, 40);
   printf("El servidor esta escuchando en el puerto %d\n", PORT);
 
-  pthread_t thread_id;
   int client_len = sizeof(client_addr);
 
   while ((client_socket = accept(server_socket, (struct sockaddr *) &client_addr, &client_len))) {
-    printf("Conneccion aceptada");
-    // TODO(Tomas): Crear un log con la conexion e irlo actualizando con los mensajes recibidos.
+    printf("Conneccion aceptada\n");
 
-    // Creo un hilo por cada conexion al servidor.
-    if (pthread_create(&thread_id, NULL, connection_handler, (void*)&client_socket) < 0) {
+
+    if (pthread_create(&hilos_cliente[contador++], NULL, connection_handler, (void*)&client_socket) < 0) {
       perror("No se pudo crear el thread.");
       exit(1);
     }
+  }
 
-    pthread_join(thread_id, NULL);
+  for (int i = 0; i < contador; ++i) {
+    pthread_join(hilos_cliente[i], NULL);
   }
 
   if (client_socket < 0) {
@@ -66,31 +81,52 @@ int main() {
     exit(2);
   }
 
+  fclose(listado);
+  fclose(log_file);
+
   return 0;
 }
 
-void log(size_t type, void* sock_addr, char* message) {
-  pthread_mutex_lock(&lock);
-    // Region critica.
-    // Se va a abrir el archivo de log y se tiene que
-    // agregar el evento que ocurrio.
-    // TYPE 0: NUEVA CONEXION
-    // TYPE 1: NUEVO MENSAJE ENVIADO A CLIENTE
-    // TYPE 2: NUEVO MENSAJE RECIBIDO DE CLIENTE
-    // TYPE 3: DESCONEXION DE CLIENTE.
-  pthread_muted_unlock(&lock);
-  return NULL;
+void SIGN_HANDLER(int sig) {
+  fclose(listado);
+  fclose(log_file);
+  exit(0);
 }
 
-void cargar_listado(FILE** archivo, char* path) {
-  // Se abre el archivo del listado de usuarios
-  // en modo lectura ya que solo se necesita comparar
-  // los valores de usuarios y contraseñas y saber 
-  // el rol del usuario.
-  *archivo = fopen(path, "r");
+void server_log(size_t type, int socket, char* message) {
+  pthread_mutex_lock(&log_lock);
+    char log_header[1024];
+    switch(type) {
+      case CLIENT_CONNECTED:
+        sprintf(log_header, "[NUEVO CLIENTE]: SOCKET %d", socket);
+        break;
+      case CLIENT_MESSAGE:
+        sprintf(log_header, "[MENSAJE DE CLIENTE (SOCKET: %d)]", socket);
+        break;
+      case SERVER_MESSAGE:
+        strcpy(log_header, "[MENSAJE DE SERVIDOR]: ");
+        break;
+      case CLIENT_DISCONNECTION:
+        sprintf(log_header, "[CLIENTE DESCONECTADO]: SOCKET %d", socket);
+        break;
+    }
+
+    if (message == NULL) {
+      fprintf(log_file, "%s\n", log_header);
+    } else {
+      fprintf(log_file, "%s %s\n", log_header, message);
+    }
+  pthread_mutex_unlock(&log_lock);
+}
+
+void cargar_archivo(FILE** archivo, char* path, char* flag) {
+  if (flag == NULL) {
+    flag = "r";
+  }
+  *archivo = fopen(path, flag);
 
   if (*archivo == 0) {
-    perror("Error al abrir el archivo del listado");
+    perror("Error al abrir archivos de listado o log.");
     exit(3);
   }
 }
@@ -100,21 +136,53 @@ void *connection_handler(void *socket_desc) {
   int read_size;
   char *message, client_message[1025];
 
-  message = "Bienvenido a la plataforma de la Universidad Nacional de La Matanza\nIngrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>";
+  server_log(CLIENT_CONNECTED, socket, NULL);
+
+  message = "Bienvenido a la plataforma de la Universidad Nacional de La Matanza\nIngrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>\nINGRESE: ";
   write(socket, message, strlen(message));
+  server_log(SERVER_MESSAGE, 0, message);
 
   while ((read_size = recv(socket, client_message, 1025, 0)) > 0) {
     client_message[read_size] = '\0';
+    server_log(CLIENT_MESSAGE, socket, client_message);
+    char* username;
+    char* password;
+    username = strtok(client_message, ":");
+    password = strtok(NULL, ":");
+    printf("USUARIO %s PASSWORD %s", username, password);
+    login(username, password);
 
     memset(client_message, 0, 1025);
   }
 
   if (read_size == 0) {
-    printf("Cliente desconectado");
-    fflush(stdout);
+    server_log(CLIENT_DISCONNECTION, socket, NULL);
+    pthread_exit(NULL);
   } else if (read_size == -1) {
     perror("Fallo al recibir informacion (recv failed)");
   }
 
   return 0;
+}
+
+int login(char* username, char* password) {
+  int logueado_correcto = 0;
+  size_t buffer_size = 255;
+  char line_buffer[buffer_size];
+
+  fseek(listado, 0, SEEK_SET);
+
+  while (logueado_correcto == 0 && fgets(line_buffer, buffer_size, listado)) {
+    char* usr = strtok(line_buffer, "|");
+    char* pwd = strtok(NULL, "|");
+    char* role = strtok(NULL, "|");
+    char* com = strtok(NULL, "|");
+
+    if (strcmp(usr, username) == 0 && strcmp(pwd, password)) {
+      printf("\nUSUARIO ENCONTRADO\n");
+      logueado_correcto = 1;
+    }
+  }
+
+  return logueado_correcto;
 }
