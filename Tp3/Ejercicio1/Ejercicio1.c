@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #define ARRAY_SIZE 10
 
 
@@ -19,11 +20,14 @@ void error();
 void guardar_info(int ,pid_t);
 int crear_procesos(int n);
 void mostrar_info();
+int validaciones(int argc, char *argv[]);
+
 struct nodo identificadores[ARRAY_SIZE];
 
 int main(int argc, char *argv[])
 {
-    int numero = validaciones(argc,argv);
+    int numero;
+    numero = validaciones(argc,argv);
     if(numero < 0)
     {
         exit(-1);
@@ -189,7 +193,8 @@ void ayuda()
 {
     printf("Ingrese un numero N para crear N jerarquias de procesos a partir del subproceso 7\n");
     printf("Ejemplo de ejecucion:\n");
-    printf("./e01 3 \n\n");
+    printf("Paso 1: 'make'\n");
+    printf("Paso 2: './e01.o 3'\n\n");
     
     printf("TRABAJO PRÁCTICO 3 - EJERCICIO 1\n");    
     printf("INTEGRANTES:\n");
