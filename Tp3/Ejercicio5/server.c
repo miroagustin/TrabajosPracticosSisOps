@@ -4,11 +4,12 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <dirent.h> // For listing files in the folder
 #include <unistd.h>
 #include <pthread.h> // Requiere link con lpthread
 #include <signal.h>
 
-#define PORT 8001
+#define PORT 8005
 
 #define CLIENT_CONNECTED 0
 #define CLIENT_MESSAGE 1
@@ -67,7 +68,7 @@ int main() {
   listen(server_socket, 40);
   printf("El servidor esta escuchando en el puerto %d\n", PORT);
 
-  int client_len = sizeof(client_addr);
+  socklen_t client_len = sizeof(client_addr);
 
   while ((client_socket = accept(server_socket, (struct sockaddr *) &client_addr, &client_len))) {
     printf("Conneccion aceptada\n");
@@ -141,17 +142,25 @@ void cargar_archivo(FILE** archivo, char* path, char* flag) {
 void *connection_handler(void *socket_desc) {
   int socket = *(int*)socket_desc;
   int read_size;
+
+  int cargando_asistencia = 0;
+
   struct User *user;
   char *message, client_message[1025];
 
+  message = (char*)(malloc(1025));
+
   server_log(CLIENT_CONNECTED, socket, NULL);
 
-  message = "Bienvenido a la plataforma de la Universidad Nacional de La Matanza\nIngrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>\nINGRESE: ";
+  strcpy(message, "Bienvenido a la plataforma de la Universidad Nacional de La Matanza\nIngrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>\nINGRESE: ");
   write(socket, message, strlen(message));
   server_log(SERVER_MESSAGE, 0, message);
 
   while ((read_size = recv(socket, client_message, 1025, 0)) > 0) {
     client_message[read_size] = '\0';
+    char *newline = strchr(client_message, '\n' );
+    if ( newline )
+      *newline = 0;
     server_log(CLIENT_MESSAGE, socket, client_message);
     
     if (user == NULL) {
@@ -162,15 +171,34 @@ void *connection_handler(void *socket_desc) {
       
       login(username, password, &user);
       if (user != NULL) {
-        //sprintf(message, "BIENVENIDO %s | ROLE: %c | COMISION: %d", user->name, user->role, user->comision);
+        sprintf(message, "BIENVENIDO %s | ROLE: %c | COMISION: %d", user->name, user->role, user->comision);
         write(socket, message, strlen(message));
         server_log(SERVER_MESSAGE, 0, message);
       } else {
-        message = "No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA";
+        strcpy(message, "No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA");
         write(socket, message, strlen(message));
         server_log(SERVER_MESSAGE, 0, message);
       }
+    } else {
+      if (user->role == 'D') {
+        // El docente podra ingresar una fecha (yyyy-mm-dd) y se debera
+        // ver si existe el archivo de asistencias (Asistencias_[FECHA]_[COMISION]) para ese
+        // dia para mostrarlo.
+        // Si no existe se debera promptear para que ingrese
+        // Mostrandole previamente cuales son los Alumnos que tiene asignados
+        // en su comision y debera llenar el listado hasta que mande un 'FIN' y se guardara el archivo.
+      } else {
+        // El alumno podra ingresar una fecha y recibir si
+        // estuvo presente ese dia enviando una fecha como 'yyyy-mm-dd'
+        // y buscarlo en un archivo Asistencias_[FECHA]_[COMISION]
+        // y si envia 'ASISTENCIA' se debera recorrer todos los
+        // archivos que tengan Asistencias_CUALQUIERCOSA_[COMISION]
+        // e ir viendo si tienen el nombre del alumno y su estado (A o P)
+        // y en base al total de Ausentes y Presentes mostrar el porcentaje
+        // de asistencia por el momento.$
+      }
     }
+
 
     memset(client_message, 0, 1025);
   }
@@ -197,7 +225,9 @@ void login(char* username, char* password, struct User **user) {
     char* role = strtok(NULL, "|");
     char* com = strtok(NULL, "|");
 
-    if (strcmp(usr, username) == 0 && strcmp(pwd, password)) {
+    printf("(%s) (%s) (%d)", pwd, password, strcmp(pwd, password));
+
+    if ((strcmp(username, usr) == 0) && (strcmp(password, pwd) == 0)) {
       *user = malloc(sizeof *user);
       strcpy((*user)->name, usr);
       (*user)->role = *role;

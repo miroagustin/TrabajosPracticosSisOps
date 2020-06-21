@@ -20,3 +20,169 @@ INGRESE:
 [MENSAJE DE CLIENTE (SOCKET: 6)] SOFI:abxdda
 
 [CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:fnini
+
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:fnifni
+
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[MENSAJE DE CLIENTE (SOCKET: 6)] nnj
+
+[MENSAJE DE CLIENTE (SOCKET: 6)] noino
+
+[MENSAJE DE CLIENTE (SOCKET: 6)] ninini:nidfnis
+
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:nfinfifn
+
+[MENSAJE DE SERVIDOR]:  BIENVENIDO PEPE | ROLE: A | COMISION: 2
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] nfinif:fidni
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 7)] jfofjof:fmsms
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 7)] PEPE:mfimfis
+
+[MENSAJE DE SERVIDOR]:  BIENVENIDO PEPE | ROLE: A | COMISION: 2
+[CLIENTE DESCONECTADO]: SOCKET 7
+[NUEVO CLIENTE]: SOCKET 8
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 8)] LUCA:dniao
+
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 7)] PEPE:x4sbsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:dunsada
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 7)] LUCA:x5sqsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:pateatraseros
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x3sbsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x3sbsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:dmoma
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x5sqsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x3sbsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x3sbsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:A
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:2
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:X3SBSA
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x4smdom
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:nfini
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x3sbsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:x3sbsa
+
+[MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
+[CLIENTE DESCONECTADO]: SOCKET 6
