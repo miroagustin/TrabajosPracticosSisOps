@@ -15,16 +15,23 @@
 #define SERVER_MESSAGE 2
 #define CLIENT_DISCONNECTION 3
 
+struct User {
+  char role;
+  char name[30];
+  int comision;
+};
+
 void *connection_handler(void*);
 void cargar_archivo(FILE**, char*, char*);
 void server_log(size_t, int, char*);
-int login(char*, char*);
+void login(char*, char*, struct User**);
 void SIGN_HANDLER(int);
 
 pthread_mutex_t log_lock;
 
 FILE* log_file;
 FILE* listado;
+
 
 int main() {
   int max_clientes = 50;
@@ -134,6 +141,7 @@ void cargar_archivo(FILE** archivo, char* path, char* flag) {
 void *connection_handler(void *socket_desc) {
   int socket = *(int*)socket_desc;
   int read_size;
+  struct User *user;
   char *message, client_message[1025];
 
   server_log(CLIENT_CONNECTED, socket, NULL);
@@ -145,12 +153,24 @@ void *connection_handler(void *socket_desc) {
   while ((read_size = recv(socket, client_message, 1025, 0)) > 0) {
     client_message[read_size] = '\0';
     server_log(CLIENT_MESSAGE, socket, client_message);
-    char* username;
-    char* password;
-    username = strtok(client_message, ":");
-    password = strtok(NULL, ":");
-    printf("USUARIO %s PASSWORD %s", username, password);
-    login(username, password);
+    
+    if (user == NULL) {
+      char* username;
+      char* password;
+      username = strtok(client_message, ":");
+      password = strtok(NULL, ":");
+      
+      login(username, password, &user);
+      if (user != NULL) {
+        //sprintf(message, "BIENVENIDO %s | ROLE: %c | COMISION: %d", user->name, user->role, user->comision);
+        write(socket, message, strlen(message));
+        server_log(SERVER_MESSAGE, 0, message);
+      } else {
+        message = "No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA";
+        write(socket, message, strlen(message));
+        server_log(SERVER_MESSAGE, 0, message);
+      }
+    }
 
     memset(client_message, 0, 1025);
   }
@@ -165,24 +185,26 @@ void *connection_handler(void *socket_desc) {
   return 0;
 }
 
-int login(char* username, char* password) {
-  int logueado_correcto = 0;
+void login(char* username, char* password, struct User **user) {
   size_t buffer_size = 255;
   char line_buffer[buffer_size];
 
   fseek(listado, 0, SEEK_SET);
 
-  while (logueado_correcto == 0 && fgets(line_buffer, buffer_size, listado)) {
+  while (fgets(line_buffer, buffer_size, listado)) {
     char* usr = strtok(line_buffer, "|");
     char* pwd = strtok(NULL, "|");
     char* role = strtok(NULL, "|");
     char* com = strtok(NULL, "|");
 
     if (strcmp(usr, username) == 0 && strcmp(pwd, password)) {
-      printf("\nUSUARIO ENCONTRADO\n");
-      logueado_correcto = 1;
+      *user = malloc(sizeof *user);
+      strcpy((*user)->name, usr);
+      (*user)->role = *role;
+      (*user)->comision = atoi(com);
+      return;
     }
   }
 
-  return logueado_correcto;
+  return;
 }

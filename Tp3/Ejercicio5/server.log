@@ -1,0 +1,22 @@
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] Pedro:perez
+
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] PEPE:jose1
+
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] didid:38n9d3
+
+[MENSAJE DE CLIENTE (SOCKET: 6)] SOFI:abxdda
+
+[CLIENTE DESCONECTADO]: SOCKET 6
