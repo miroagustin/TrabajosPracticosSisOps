@@ -9,7 +9,7 @@
 #include <pthread.h> // Requiere link con lpthread
 #include <signal.h>
 
-#define PORT 8005
+#define PORT 8001
 
 #define CLIENT_CONNECTED 0
 #define CLIENT_MESSAGE 1
@@ -26,6 +26,7 @@ void *connection_handler(void*);
 void cargar_archivo(FILE**, char*, char*);
 void server_log(size_t, int, char*);
 void login(char*, char*, struct User**);
+int check_for_file(char*);
 void SIGN_HANDLER(int);
 
 pthread_mutex_t log_lock;
@@ -144,6 +145,7 @@ void *connection_handler(void *socket_desc) {
   int read_size;
 
   int cargando_asistencia = 0;
+  char archivo_asistencia[20];
 
   struct User *user;
   char *message, client_message[1025];
@@ -181,6 +183,28 @@ void *connection_handler(void *socket_desc) {
       }
     } else {
       if (user->role == 'D') {
+        if (cargando_asistencia == 1) {
+          if (strcmp(client_message, "FIN") == 0) {
+            strcpy(message, "\nFINALIZO EL PROCESO DE CARGA. SE HA GUARDADO EL ARCHIVO");
+            write(socket, message, strlen(message));
+            server_log(SERVER_MESSAGE, 0, message);
+            cargando_asistencia = 0;
+          } else {
+            strcpy(message, "\nINGRESE NOMBRE|PRESENCIA: ");
+            write(socket, message, strlen(message));
+            server_log(SERVER_MESSAGE, 0, message);
+          }
+        } else {
+          sprintf(archivo_asistencia, "Asistencia_%s_%d.txt", client_message, user->comision);
+          strcpy(archivo_asistencia, archivo_asistencia);
+          if (check_for_file(archivo_asistencia) == 1) {
+          } else {
+            strcpy(message, "No hay un archivo cargado para esa fecha\nIngrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN\nINGRESE NOMBRE|PRESENCIA: ");
+            write(socket, message, strlen(message));
+            server_log(SERVER_MESSAGE, 0, message);
+            cargando_asistencia = 1;
+          }
+        }
         // El docente podra ingresar una fecha (yyyy-mm-dd) y se debera
         // ver si existe el archivo de asistencias (Asistencias_[FECHA]_[COMISION]) para ese
         // dia para mostrarlo.
@@ -237,4 +261,20 @@ void login(char* username, char* password, struct User **user) {
   }
 
   return;
+}
+
+int check_for_file(char* file_name) {
+  DIR *d;
+  struct dirent *dir;
+
+  d = opendir("./Asistencia");
+  if (d) {
+    while ((dir = readdir(d)) != NULL) {
+      if (strcmp(file_name, dir->d_name) == 0) {
+        return 1;
+      } 
+    }
+    closedir(d);
+  }
+  return 0;
 }

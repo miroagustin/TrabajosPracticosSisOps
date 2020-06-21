@@ -186,3 +186,139 @@ INGRESE:
 
 [MENSAJE DE SERVIDOR]:  No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA
 [CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+[MENSAJE DE CLIENTE (SOCKET: 6)] 
+[MENSAJE DE CLIENTE (SOCKET: 6)] 
+[MENSAJE DE CLIENTE (SOCKET: 6)] fmdspf
+[MENSAJE DE CLIENTE (SOCKET: 6)] sdfposd
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] LUCA:x5sqsa
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[MENSAJE DE CLIENTE (SOCKET: 7)] 9999-01-01
+[CLIENTE DESCONECTADO]: SOCKET 7
+[NUEVO CLIENTE]: SOCKET 8
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] LUCA:x5sqsa
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[MENSAJE DE CLIENTE (SOCKET: 7)] nifnofs
+[MENSAJE DE CLIENTE (SOCKET: 7)] nfoisdnifs
+[MENSAJE DE CLIENTE (SOCKET: 7)] 2222-01-01
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] LUCA:x5sqsa
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[MENSAJE DE CLIENTE (SOCKET: 7)] 2020-01-01
+[MENSAJE DE CLIENTE (SOCKET: 7)] 2020-01-01
+[CLIENTE DESCONECTADO]: SOCKET 7
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCMD:DASMID
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+[MENSAJE DE CLIENTE (SOCKET: 6)] mfpsdmf
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] LUCA:x5sqsa
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[MENSAJE DE CLIENTE (SOCKET: 7)] 2020-01-01
+[MENSAJE DE SERVIDOR]:  No hay un archivo cargado para esa fecha
+Ingrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] ROBERTO|A
+[MENSAJE DE SERVIDOR]:  
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE SERVIDOR]:  No hay un archivo cargado para esa fecha
+Ingrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] ANA|P
+[MENSAJE DE SERVIDOR]:  
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE SERVIDOR]:  No hay un archivo cargado para esa fecha
+Ingrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN
+INGRESE NOMBRE|PRESENCIA: 
+[CLIENTE DESCONECTADO]: SOCKET 7
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] LUCA:x5sqsa
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] LUCA:x5sqsa
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[MENSAJE DE CLIENTE (SOCKET: 7)] 2020-01-01
+[MENSAJE DE SERVIDOR]:  No hay un archivo cargado para esa fecha
+Ingrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] roberto|a
+[MENSAJE DE SERVIDOR]:  
+FINALIZO EL PROCESO DE CARGA. SE HA GUARDADO EL ARCHIVO
+[MENSAJE DE CLIENTE (SOCKET: 7)] 2020-01-01
+[MENSAJE DE SERVIDOR]:  
+FINALIZO EL PROCESO DE CARGA. SE HA GUARDADO EL ARCHIVO
+[CLIENTE DESCONECTADO]: SOCKET 7
+[NUEVO CLIENTE]: SOCKET 6
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 6)] fsdfsd
+[CLIENTE DESCONECTADO]: SOCKET 6
+[NUEVO CLIENTE]: SOCKET 7
+[MENSAJE DE SERVIDOR]:  Bienvenido a la plataforma de la Universidad Nacional de La Matanza
+Ingrese nombre de usuario y contraseña como <nombre_de_usuario>:<contraseña>
+INGRESE: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] LUCA:x5sqsa
+[MENSAJE DE SERVIDOR]:  BIENVENIDO LUCA | ROLE: D | COMISION: 1
+[MENSAJE DE CLIENTE (SOCKET: 7)] 2020-01-01
+[MENSAJE DE SERVIDOR]:  No hay un archivo cargado para esa fecha
+Ingrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] PEPE|P
+[MENSAJE DE SERVIDOR]:  
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] ANA|A
+[MENSAJE DE SERVIDOR]:  
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] JORGE|P
+[MENSAJE DE SERVIDOR]:  
+INGRESE NOMBRE|PRESENCIA: 
+[MENSAJE DE CLIENTE (SOCKET: 7)] FIN
+[MENSAJE DE SERVIDOR]:  
+FINALIZO EL PROCESO DE CARGA. SE HA GUARDADO EL ARCHIVO
+[CLIENTE DESCONECTADO]: SOCKET 7
