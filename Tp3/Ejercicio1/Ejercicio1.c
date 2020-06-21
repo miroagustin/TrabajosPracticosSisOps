@@ -14,23 +14,25 @@ struct nodo
     int id_hijo;
 };
 
-//[]
 void ayuda();
 void error();
 void guardar_info(int ,pid_t);
 int crear_procesos(int n);
 void mostrar_info();
+struct nodo identificadores[ARRAY_SIZE];
 
-struct nodo identificadores[ARRAY_SIZE];  /*datos sin inicializar*/
-//struct nodo *identificadores = malloc(7 * sizeof(struct nodo));
-
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    int n=0;
-    printf("Introduce un numero entero: \n");
-    scanf("%d",&n);
-
-    crear_procesos(n);
+    int numero = validaciones(argc,argv);
+    if(numero < 0)
+    {
+        exit(-1);
+    }
+    else
+    {
+        crear_procesos(numero);
+        exit(0);
+    }
 }
 
 int crear_procesos(int n)
@@ -145,14 +147,55 @@ void mostrar_info()
      printf("%01d(%04d)\n\n", 0,identificadores[0].id_padre);
 }
     
+int validaciones(int argc, char *argv[])
+{
+    int n;
+    if(argc<=1)
+    {
+        printf("No ha ingresado ningun numero, por favor revise la ayuda\n");
+        exit(-1);
+    } 
+    else if(argc>2)
+    {
+        printf("Ingreso mas de un parametro, por favor revise la ayuda\n");
+        exit(-1);
+    }
+    else if(strcmp(argv[1],"-h")==0||strcmp(argv[1],"-help")==0||strcmp(argv[1],"-?")==0)
+    {
+        ayuda();
+        exit(-1);
+    }
+    else if(atoi(argv[1])<0)
+    {
+        printf("ingreso un numero negativo, por favor revise la ayuda\n");
+        exit(-1);
+    }
+    else if(!isdigit(*argv[1]))
+    {
+        printf("Lo que ingreso no es un numero valido, por favor revise la ayuda\n");
+        exit(-1);
+    }
+    n=atoi(argv[1]);
+    if(n<0)
+    {
+        printf("ERROR, ha ingresado un numero negativo\n");
+        exit(-1);
+    }
+    
+return n;
+}    
 
 void ayuda()
 {
-
+    printf("Ingrese un numero N para crear N jerarquias de procesos a partir del subproceso 7\n");
+    printf("Ejemplo de ejecucion:\n");
+    printf("./e01 3 \n\n");
+    
+    printf("TRABAJO PRÁCTICO 3 - EJERCICIO 1\n");    
+    printf("INTEGRANTES:\n");
+    printf("Parra, Martin                  DNI:40012233\n");
+    printf("Di Vito, Tomas                 DNI:39340228\n");
+    printf("Fernandez, Matias Gabriel      DNI:38613699\n");
+    printf("Mirò, Agustin                  DNI:40923621\n");
+    printf("Estevez, Adrian                DNI:39325872\n");
 }
-
-void error()
-{
-    printf("Error de creacion de proceso\n");
-}
-
