@@ -9,7 +9,7 @@
 #include <pthread.h> // Requiere link con lpthread
 #include <signal.h>
 
-#define PORT 8001
+#define PORT 8000
 
 #define CLIENT_CONNECTED 0
 #define CLIENT_MESSAGE 1
@@ -28,8 +28,15 @@ void server_log(size_t, int, char*);
 void login(char*, char*, struct User**);
 int check_for_file(char*);
 void SIGN_HANDLER(int);
+void cargar_asistencia(char*, char*);
 
 pthread_mutex_t log_lock;
+// Cuando accedemos a archivos lockeamos
+// en caso de que otro usuario pueda querer
+// acceder a un archivo en el mismo momento.
+// Hacemos que el que haya pedido algo con un archivo
+// espere a que el otro finalice de leer/escribir a un archivo.
+pthread_mutex_t acceso_a_archivo;
 
 FILE* log_file;
 FILE* listado;
@@ -190,6 +197,7 @@ void *connection_handler(void *socket_desc) {
             server_log(SERVER_MESSAGE, 0, message);
             cargando_asistencia = 0;
           } else {
+            cargar_asistencia(archivo_asistencia, client_message);
             strcpy(message, "\nINGRESE NOMBRE|PRESENCIA: ");
             write(socket, message, strlen(message));
             server_log(SERVER_MESSAGE, 0, message);
@@ -197,7 +205,9 @@ void *connection_handler(void *socket_desc) {
         } else {
           sprintf(archivo_asistencia, "Asistencia_%s_%d.txt", client_message, user->comision);
           strcpy(archivo_asistencia, archivo_asistencia);
+
           if (check_for_file(archivo_asistencia) == 1) {
+
           } else {
             strcpy(message, "No hay un archivo cargado para esa fecha\nIngrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN\nINGRESE NOMBRE|PRESENCIA: ");
             write(socket, message, strlen(message));
@@ -266,6 +276,8 @@ void login(char* username, char* password, struct User **user) {
 int check_for_file(char* file_name) {
   DIR *d;
   struct dirent *dir;
+  printf("FILE: %s", file_name);
+  fflush(stdout);
 
   d = opendir("./Asistencia");
   if (d) {
@@ -277,4 +289,14 @@ int check_for_file(char* file_name) {
     closedir(d);
   }
   return 0;
+}
+
+void cargar_asistencia(char *archivo, char *contenido) {
+  char* path;
+  sprintf(path, "./Asistencia/%s", archivo);
+  pthread_mutex_lock(&log_lock);
+  FILE *f = fopen(path, "a+");
+  fprintf(f, "%s\n", contenido);
+  fclose(f);
+  pthread_mutex_unlock(&log_lock);
 }
