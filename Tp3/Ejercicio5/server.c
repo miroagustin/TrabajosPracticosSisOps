@@ -74,14 +74,10 @@ int main() {
   }
 
   listen(server_socket, 40);
-  printf("El servidor esta escuchando en el puerto %d\n", PORT);
 
   socklen_t client_len = sizeof(client_addr);
 
   while ((client_socket = accept(server_socket, (struct sockaddr *) &client_addr, &client_len))) {
-    printf("Conneccion aceptada\n");
-
-
     if (pthread_create(&hilos_cliente[contador++], NULL, connection_handler, (void*)&client_socket) < 0) {
       perror("No se pudo crear el thread.");
       exit(1);
@@ -180,11 +176,11 @@ void *connection_handler(void *socket_desc) {
       
       login(username, password, &user);
       if (user != NULL) {
-        sprintf(message, "BIENVENIDO %s | ROLE: %c | COMISION: %d", user->name, user->role, user->comision);
+        sprintf(message, "\nBIENVENIDO %s | ROLE: %c | COMISION: %d\n", user->name, user->role, user->comision);
         write(socket, message, strlen(message));
         server_log(SERVER_MESSAGE, 0, message);
       } else {
-        strcpy(message, "No se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA");
+        strcpy(message, "\nNo se encontro usuario con esa combinacion de USUARIO:CONTRASEÑA\nINGRESE NUEVAMENTE: ");
         write(socket, message, strlen(message));
         server_log(SERVER_MESSAGE, 0, message);
       }
@@ -192,13 +188,13 @@ void *connection_handler(void *socket_desc) {
       if (user->role == 'D') {
         if (cargando_asistencia == 1) {
           if (strcmp(client_message, "FIN") == 0) {
-            strcpy(message, "\nFINALIZO EL PROCESO DE CARGA. SE HA GUARDADO EL ARCHIVO");
+            strcpy(message, "\nFINALIZO EL PROCESO DE CARGA. SE HA GUARDADO EL ARCHIVO\n");
             write(socket, message, strlen(message));
             server_log(SERVER_MESSAGE, 0, message);
             cargando_asistencia = 0;
           } else {
             cargar_asistencia(archivo_asistencia, client_message);
-            strcpy(message, "\nINGRESE NOMBRE|PRESENCIA: ");
+            strcpy(message, "INGRESE NOMBRE|PRESENCIA: ");
             write(socket, message, strlen(message));
             server_log(SERVER_MESSAGE, 0, message);
           }
@@ -207,9 +203,29 @@ void *connection_handler(void *socket_desc) {
           strcpy(archivo_asistencia, archivo_asistencia);
 
           if (check_for_file(archivo_asistencia) == 1) {
+            char *file_name = (char*)(malloc(50));
+            sprintf(file_name, "./Asistencia/%s", archivo_asistencia);
 
+            strcpy(message, "NOMBRE|PRESENTE");
+            write(socket, message, strlen(message));
+            server_log(SERVER_MESSAGE, 0, message);
+
+            char* line;
+            ssize_t read;
+            ssize_t len = 0;
+            pthread_mutex_lock(&acceso_a_archivo);
+            FILE *f = fopen(file_name, "r");
+            while((read = getline(&line, &len, f) != -1)) {
+              sprintf(message, "%s\n", line);
+              write(socket, message, strlen(message));
+              server_log(SERVER_MESSAGE, 0, message);
+            }
+            fclose(f);
+            pthread_mutex_unlock(&acceso_a_archivo);
+            free(line);
+            free(file_name);
           } else {
-            strcpy(message, "No hay un archivo cargado para esa fecha\nIngrese el presentismo del alumno enviando ALUMNO|PRESENCIA y cuando termine envie FIN\nINGRESE NOMBRE|PRESENCIA: ");
+            strcpy(message, "No hay un archivo cargado para esa fecha\nIngrese el presentismo del alumno enviando ALUMNO|PRESENCIA (ROBERTO|P por ejemplo) y cuando termine envie FIN\nINGRESE NOMBRE|PRESENCIA: ");
             write(socket, message, strlen(message));
             server_log(SERVER_MESSAGE, 0, message);
             cargando_asistencia = 1;
@@ -251,6 +267,7 @@ void login(char* username, char* password, struct User **user) {
   size_t buffer_size = 255;
   char line_buffer[buffer_size];
 
+
   fseek(listado, 0, SEEK_SET);
 
   while (fgets(line_buffer, buffer_size, listado)) {
@@ -259,10 +276,8 @@ void login(char* username, char* password, struct User **user) {
     char* role = strtok(NULL, "|");
     char* com = strtok(NULL, "|");
 
-    printf("(%s) (%s) (%d)", pwd, password, strcmp(pwd, password));
-
     if ((strcmp(username, usr) == 0) && (strcmp(password, pwd) == 0)) {
-      *user = malloc(sizeof *user);
+      *user = (struct User*)(malloc(sizeof **user));
       strcpy((*user)->name, usr);
       (*user)->role = *role;
       (*user)->comision = atoi(com);
@@ -276,8 +291,6 @@ void login(char* username, char* password, struct User **user) {
 int check_for_file(char* file_name) {
   DIR *d;
   struct dirent *dir;
-  printf("FILE: %s", file_name);
-  fflush(stdout);
 
   d = opendir("./Asistencia");
   if (d) {
@@ -294,9 +307,9 @@ int check_for_file(char* file_name) {
 void cargar_asistencia(char *archivo, char *contenido) {
   char* path;
   sprintf(path, "./Asistencia/%s", archivo);
-  pthread_mutex_lock(&log_lock);
+  pthread_mutex_lock(&acceso_a_archivo);
   FILE *f = fopen(path, "a+");
   fprintf(f, "%s\n", contenido);
   fclose(f);
-  pthread_mutex_unlock(&log_lock);
+  pthread_mutex_unlock(&acceso_a_archivo);
 }
