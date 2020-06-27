@@ -9,7 +9,7 @@
 #include <pthread.h> // Requiere link con lpthread
 #include <signal.h>
 
-#define PORT 8000
+#define PORT 8002
 
 #define CLIENT_CONNECTED 0
 #define CLIENT_MESSAGE 1
