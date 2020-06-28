@@ -9,7 +9,7 @@
 #include <pthread.h> // Requiere link con lpthread
 #include <signal.h>
 
-#define PORT 8000
+#define PORT 8001
 
 #define CLIENT_CONNECTED 0
 #define CLIENT_MESSAGE 1
@@ -30,6 +30,7 @@ int check_for_file(char*);
 void SIGN_HANDLER(int);
 void cargar_asistencia(char*, char*);
 int asistio(char*, char*);
+int calcular_porcentaje_asistencia(char*, int);
 
 pthread_mutex_t log_lock;
 // Cuando accedemos a archivos lockeamos
@@ -38,6 +39,7 @@ pthread_mutex_t log_lock;
 // Hacemos que el que haya pedido algo con un archivo
 // espere a que el otro finalice de leer/escribir a un archivo.
 pthread_mutex_t acceso_a_archivo;
+pthread_mutex_t asistencia_mutex;
 
 FILE* log_file;
 FILE* listado;
@@ -46,6 +48,7 @@ FILE* listado;
 int main(int argc, char** argv) {
   if (argc == 2 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)) {
     printf("BIENVENIDO AL SISTEMA DE LA UNIVERSIDAD NACIONAL DE LA MATANZA:\nComo cliente debera conectarse y loguearse.\nSi entra como Docente podra colocar una fecha y recibir el listado de presencia de ese dia, o cargarlo siguiendo las instrucciones\nComo alumno podra preguntar si estuvo presente o ausente en un dia, o mandar 'Asistencia' para conseguir su porcentaje de asistencia actual");
+    fflush(stdout);
     return 0;
   }
 
@@ -80,6 +83,9 @@ int main(int argc, char** argv) {
   }
 
   listen(server_socket, 40);
+
+  printf("SERVIDOR ARRANCADO EN PUERTO %d \n", PORT);
+  fflush(stdout);
 
   socklen_t client_len = sizeof(client_addr);
 
@@ -206,7 +212,6 @@ void *connection_handler(void *socket_desc) {
           }
         } else {
           sprintf(archivo_asistencia, "Asistencia_%s_%d.txt", client_message, user->comision);
-          strcpy(archivo_asistencia, archivo_asistencia);
 
           if (check_for_file(archivo_asistencia) == 1) {
             char *file_name = (char*)(malloc(50));
@@ -253,23 +258,25 @@ void *connection_handler(void *socket_desc) {
         // y en base al total de Ausentes y Presentes mostrar el porcentaje
         // de asistencia por el momento.$
         if (strcmp(client_message, "ASISTENCIA") == 0) {
-          printf("Missing functionality");
-          fflush(stdout);
+          int porcentaje_asistencia = calcular_porcentaje_asistencia(user->name, user->comision);
+          sprintf(message, "El usuario %s de la comision %d tiene un porcentaje de asistencia del %d%%\n", user->name, user->comision, porcentaje_asistencia);
+          write(socket, message, strlen(message));
+          server_log(SERVER_MESSAGE, 0, message);
         } else {
           sprintf(archivo_asistencia, "Asistencia_%s_%d.txt", client_message, user->comision);
-          strcpy(archivo_asistencia, archivo_asistencia);
+          
           if (check_for_file(archivo_asistencia) == 1) {
             if (asistio(archivo_asistencia, user->name) == 1) {
               sprintf(message, "El dia de la fecha %s el alumno %s ASISTIO a la clase de la comision %d\n", client_message, user->name, user->comision);
               write(socket, message, strlen(message));
               server_log(SERVER_MESSAGE, 0, message);
             } else {
-              sprintf(message, "El dia de la fecha %s el alumno %s SE AUSENTO a la clase de la comision %d", client_message, user->name, user->comision);
+              sprintf(message, "El dia de la fecha %s el alumno %s SE AUSENTO a la clase de la comision %d\n", client_message, user->name, user->comision);
               write(socket, message, strlen(message));
               server_log(SERVER_MESSAGE, 0, message);
             }
           } else {
-            sprintf(message, "No se encontro archivo de asistencias para la fecha %s y la comision %d", client_message, user->comision);
+            sprintf(message, "No se encontro archivo de asistencias para la fecha %s y la comision %d\n", client_message, user->comision);
             write(socket, message, strlen(message));
             server_log(SERVER_MESSAGE, 0, message);
           }
@@ -329,8 +336,8 @@ int check_for_file(char* file_name) {
         return 1;
       } 
     }
-    pthread_mutex_unlock(&acceso_a_archivo);
     closedir(d);
+    pthread_mutex_unlock(&acceso_a_archivo);
   }
   return 0;
 }
@@ -346,26 +353,69 @@ void cargar_asistencia(char *archivo, char *contenido) {
 }
 
 int asistio(char* archivo, char* user) {
-  FILE* f;
   size_t buffer_size = 255;
   char line_buffer[buffer_size];
-  char* file_path;
+  char* file_path = (char*)(malloc(100));
 
   sprintf(file_path, "./Asistencia/%s", archivo);
 
   pthread_mutex_lock(&acceso_a_archivo);
-  f = fopen(file_path, "r");
+  FILE* f = fopen(file_path, "r");
   fseek(f, 0, SEEK_SET);
+  free(file_path);
 
   while (fgets(line_buffer, buffer_size, f)) {
     char* usr = strtok(line_buffer, "|");
     char* asistencia = strtok(NULL, "|");
+    char *newline = strchr(asistencia, '\n' );
+    if ( newline )
+      *newline = 0;
+
 
     if ((strcmp(user, usr) == 0) && (strcmp(asistencia, "P") == 0)) {
+      pthread_mutex_unlock(&acceso_a_archivo);
       return 1;
     }
   }
   fclose(f);
-  pthread_mutex_lock(&acceso_a_archivo);
+  pthread_mutex_unlock(&acceso_a_archivo);
   return 0;
+}
+
+int calcular_porcentaje_asistencia(char* usuario, int comision) {
+  DIR *d;
+  struct dirent *dir;
+
+  int cantidad_dias = 0;
+  int cantidad_presentes = 0;
+
+  pthread_mutex_lock(&asistencia_mutex);
+  d = opendir("./Asistencia");
+  if (d) {
+    while ((dir = readdir(d)) != NULL) {
+      char* _ = strtok(dir->d_name, "_");
+      char* fecha = strtok(NULL, "_");
+      char* comisionConExtension = strtok(NULL, "_");
+      char* com = strtok(comisionConExtension, ".");
+
+      if (!comisionConExtension) {
+        continue;
+      }
+      int comisionArchivo = atoi(comisionConExtension);
+
+      if (comision == comisionArchivo) {
+        cantidad_dias++;
+        char* nombre_archivo = (char*)(malloc(50));
+        sprintf(nombre_archivo, "Asistencia_%s_%d.txt", fecha, comisionArchivo);
+        if (asistio(nombre_archivo, usuario) == 1) {
+          cantidad_presentes++;
+        }
+        free(nombre_archivo);
+      } 
+    }
+    closedir(d);
+    pthread_mutex_unlock(&asistencia_mutex);
+  }
+  
+  return cantidad_presentes * 100 / cantidad_dias;
 }
