@@ -9,7 +9,7 @@
 #include <pthread.h> // Requiere link con lpthread
 #include <signal.h>
 
-#define PORT 8002
+#define PORT 8000
 
 #define CLIENT_CONNECTED 0
 #define CLIENT_MESSAGE 1
@@ -29,6 +29,7 @@ void login(char*, char*, struct User**);
 int check_for_file(char*);
 void SIGN_HANDLER(int);
 void cargar_asistencia(char*, char*);
+int asistio(char*, char*);
 
 pthread_mutex_t log_lock;
 // Cuando accedemos a archivos lockeamos
@@ -42,7 +43,12 @@ FILE* log_file;
 FILE* listado;
 
 
-int main() {
+int main(int argc, char** argv) {
+  if (argc == 2 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)) {
+    printf("BIENVENIDO AL SISTEMA DE LA UNIVERSIDAD NACIONAL DE LA MATANZA:\nComo cliente debera conectarse y loguearse.\nSi entra como Docente podra colocar una fecha y recibir el listado de presencia de ese dia, o cargarlo siguiendo las instrucciones\nComo alumno podra preguntar si estuvo presente o ausente en un dia, o mandar 'Asistencia' para conseguir su porcentaje de asistencia actual");
+    return 0;
+  }
+
   int max_clientes = 50;
   int clientes = 0;
   int contador = 0;
@@ -206,7 +212,7 @@ void *connection_handler(void *socket_desc) {
             char *file_name = (char*)(malloc(50));
             sprintf(file_name, "./Asistencia/%s", archivo_asistencia);
 
-            strcpy(message, "NOMBRE|PRESENTE");
+            strcpy(message, "\nNOMBRE|PRESENTE\n");
             write(socket, message, strlen(message));
             server_log(SERVER_MESSAGE, 0, message);
 
@@ -216,7 +222,7 @@ void *connection_handler(void *socket_desc) {
             pthread_mutex_lock(&acceso_a_archivo);
             FILE *f = fopen(file_name, "r");
             while((read = getline(&line, &len, f) != -1)) {
-              sprintf(message, "%s\n", line);
+              sprintf(message, "%s", line);
               write(socket, message, strlen(message));
               server_log(SERVER_MESSAGE, 0, message);
             }
@@ -246,9 +252,30 @@ void *connection_handler(void *socket_desc) {
         // e ir viendo si tienen el nombre del alumno y su estado (A o P)
         // y en base al total de Ausentes y Presentes mostrar el porcentaje
         // de asistencia por el momento.$
+        if (strcmp(client_message, "ASISTENCIA") == 0) {
+          printf("Missing functionality");
+          fflush(stdout);
+        } else {
+          sprintf(archivo_asistencia, "Asistencia_%s_%d.txt", client_message, user->comision);
+          strcpy(archivo_asistencia, archivo_asistencia);
+          if (check_for_file(archivo_asistencia) == 1) {
+            if (asistio(archivo_asistencia, user->name) == 1) {
+              sprintf(message, "El dia de la fecha %s el alumno %s ASISTIO a la clase de la comision %d\n", client_message, user->name, user->comision);
+              write(socket, message, strlen(message));
+              server_log(SERVER_MESSAGE, 0, message);
+            } else {
+              sprintf(message, "El dia de la fecha %s el alumno %s SE AUSENTO a la clase de la comision %d", client_message, user->name, user->comision);
+              write(socket, message, strlen(message));
+              server_log(SERVER_MESSAGE, 0, message);
+            }
+          } else {
+            sprintf(message, "No se encontro archivo de asistencias para la fecha %s y la comision %d", client_message, user->comision);
+            write(socket, message, strlen(message));
+            server_log(SERVER_MESSAGE, 0, message);
+          }
+        }
       }
     }
-
 
     memset(client_message, 0, 1025);
   }
@@ -292,13 +319,17 @@ int check_for_file(char* file_name) {
   DIR *d;
   struct dirent *dir;
 
+  pthread_mutex_lock(&acceso_a_archivo);
   d = opendir("./Asistencia");
   if (d) {
     while ((dir = readdir(d)) != NULL) {
       if (strcmp(file_name, dir->d_name) == 0) {
+        closedir(d);
+        pthread_mutex_unlock(&acceso_a_archivo);
         return 1;
       } 
     }
+    pthread_mutex_unlock(&acceso_a_archivo);
     closedir(d);
   }
   return 0;
@@ -312,4 +343,29 @@ void cargar_asistencia(char *archivo, char *contenido) {
   fprintf(f, "%s\n", contenido);
   fclose(f);
   pthread_mutex_unlock(&acceso_a_archivo);
+}
+
+int asistio(char* archivo, char* user) {
+  FILE* f;
+  size_t buffer_size = 255;
+  char line_buffer[buffer_size];
+  char* file_path;
+
+  sprintf(file_path, "./Asistencia/%s", archivo);
+
+  pthread_mutex_lock(&acceso_a_archivo);
+  f = fopen(file_path, "r");
+  fseek(f, 0, SEEK_SET);
+
+  while (fgets(line_buffer, buffer_size, f)) {
+    char* usr = strtok(line_buffer, "|");
+    char* asistencia = strtok(NULL, "|");
+
+    if ((strcmp(user, usr) == 0) && (strcmp(asistencia, "P") == 0)) {
+      return 1;
+    }
+  }
+  fclose(f);
+  pthread_mutex_lock(&acceso_a_archivo);
+  return 0;
 }
