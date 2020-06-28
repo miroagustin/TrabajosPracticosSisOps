@@ -47,7 +47,7 @@ FILE* listado;
 
 int main(int argc, char** argv) {
   if (argc == 2 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)) {
-    printf("BIENVENIDO AL SISTEMA DE LA UNIVERSIDAD NACIONAL DE LA MATANZA:\nComo cliente debera conectarse y loguearse.\nSi entra como Docente podra colocar una fecha y recibir el listado de presencia de ese dia, o cargarlo siguiendo las instrucciones\nComo alumno podra preguntar si estuvo presente o ausente en un dia, o mandar 'Asistencia' para conseguir su porcentaje de asistencia actual");
+    printf("BIENVENIDO AL SISTEMA DE LA UNIVERSIDAD NACIONAL DE LA MATANZA:\nComo cliente debera conectarse y loguearse.\nSi entra como Docente podra colocar una fecha y recibir el listado de presencia de ese dia, o cargarlo siguiendo las instrucciones\nComo alumno podra preguntar si estuvo presente o ausente en un dia, o mandar 'ASISTENCIA' para conseguir su porcentaje de asistencia actual");
     fflush(stdout);
     return 0;
   }
